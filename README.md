@@ -2,13 +2,13 @@
 
 **Your exam mastered**
 
-Prep is an AI-powered exam preparation app that helps students revise for their specific exams through structured, syllabus-aligned content. No chatbot, no free prompts — just pick your exam, pick your topic, and start learning.
+Prep is an AI-powered exam preparation app that helps students revise for their specific exams through structured, syllabus-aligned content. No chatbot, no free prompts just pick your exam, pick your topic, and start learning.
 
 ---
 
 ## What is Prep?
 
-Prep uses constrained AI to generate exam-style questions, revision notes, worked examples, and full practice exams — all tailored to specific exam systems and syllabuses.
+Prep uses constrained AI to generate exam-style questions, revision notes, worked examples, and full practice exams all tailored to specific exam systems and syllabuses.
 
 Unlike general AI tools, Prep doesn't hallucinate or go off-topic. Every interaction is locked to the student's selected syllabus, ensuring accuracy and relevance.
 
