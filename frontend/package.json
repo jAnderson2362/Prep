@@ -8,7 +8,7 @@
   "scripts": {
     "vite": "vite dev --port 3000",
     "dev": "concurrently -n BACKEND,FRONTEND -c blue,green \"pnpm run backend\" \"pnpm run frontend\"",
-    "backend": "cd ../backend && py -m fastapi dev",
+    "backend": "cd ../backend && cross-env PYTHONUTF8=1 && py -m uvicorn main:app --reload",
     "frontend": "pnpm run vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -44,6 +44,8 @@
     "@tanstack/store": "latest",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
     "drizzle-kit": "^0.31.9",
     "drizzle-orm": "^0.45.1",
     "lucide-react": "^0.577.0",
