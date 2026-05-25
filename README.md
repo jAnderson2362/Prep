@@ -73,8 +73,8 @@ cd prep
 
 # Frontend
 cd client
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 
 # Backend
 cd ../server
