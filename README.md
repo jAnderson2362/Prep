@@ -1,146 +1,165 @@
 # Prep
 
-**Your exam mastered**
+A small full-stack starter project using TanStack Start on the frontend and FastAPI on the backend.
 
-Prep is an AI-powered exam preparation app that helps students revise for their specific exams through structured, syllabus-aligned content. No chatbot, no free prompts just pick your exam, pick your topic, and start learning.
+This repository currently contains:
 
----
+- `frontend/` — React application built with TanStack Router, TypeScript, Tailwind, and generated OpenAPI types
+- `backend/` — FastAPI backend with Supabase support and product routes
 
-## What is Prep?
+## What this project is now
 
-Prep uses constrained AI to generate exam-style questions, revision notes, worked examples, and full practice exams all tailored to specific exam systems and syllabuses.
+This project is a modern frontend/backend starter, not a finished exam app. It demonstrates:
 
-Unlike general AI tools, Prep doesn't hallucinate or go off-topic. Every interaction is locked to the student's selected syllabus, ensuring accuracy and relevance.
+- file-based routing with `@tanstack/react-router`
+- API typing with `openapi-fetch` and `src/types/api.ts`
+- a FastAPI backend with route separation in `backend/routers`
+- Supabase-backed CRUD operations for products
 
-### How it works
+## Current features
 
-1. **Pick your exam system** → NCEA, GCSE, AP, etc.
-2. **Pick your subject** → Mathematics, Biology, Chemistry, etc.
-3. **Pick your topic** → Quadratic Equations, Cell Structure, etc.
-4. **Pick what you need** → Learn, Practice Quiz, or Full Exam
-5. **Start revising** → Accurate, exam-style content in seconds
+- Home page (`frontend/src/routes/index.tsx`)
+- About page (`frontend/src/routes/about.tsx`)
+- Products page (`frontend/src/routes/products.tsx`)
+- Backend FastAPI product CRUD routes in `backend/routers/products.py`
+- Typed API client in `frontend/src/lib/api.ts`
+- Auto-generated frontend API types in `frontend/src/types/api.ts`
 
-### Core Features
-
-- **Learn Mode** — Concept explanations, worked examples, simplified breakdowns, exam-specific tips
-- **Practice Mode** — Quick quizzes, topic tests, mixed difficulty questions
-- **Exam Mode** — Full timed practice exams that mirror real exam structure, mark allocations, and question types
-- **Progress Tracking** — Readiness scores, weak topic identification, improvement over time
-
----
-
-## Tech Stack
-
-| Layer       | Technology        |
-|-------------|-------------------|
-| Frontend    | React             |
-| Backend     | Python (FastAPI)   |
-| Database    | PostgreSQL        |
-| AI          | Claude / OpenAI API |
-| Hosting     | TBD               |
-
----
-
-## Project Structure
+## Project structure
 
 ```
-prep/
-├── client/          # React frontend
-├── server/          # Python FastAPI backend
-├── database/        # Schema and migrations
-├── content/         # Syllabus data, exam blueprints, prompt templates
-├── tests/           # Test suite
-└── docs/            # Documentation
+Prep/
+├── backend/
+│   ├── core/                # Supabase client and config
+│   ├── models/              # Pydantic models
+│   ├── routers/             # FastAPI route modules
+│   └── services/            # Backend service logic
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── lib/             # shared client helpers
+│   │   ├── routes/          # file-based TanStack Router routes
+│   │   ├── styles.css
+│   │   └── types/           # OpenAPI-generated types
+│   ├── package.json
+│   └── vite.config.ts
+└── README.md
 ```
 
----
+## Setup
 
-## Getting Started
+### Backend
 
-### Prerequisites
+1. Create `backend/.env` with:
 
-- Node.js (v18+)
-- Python (3.10+)
-- PostgreSQL
-- API key for Claude or OpenAI
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_service_key
+```
 
-### Setup
+2. Install dependencies:
 
 ```bash
-# Clone the repo
-git clone https://github.com/your-org/prep.git
-cd prep
+python -m pip install fastapi uvicorn supabase python-dotenv
+```
 
-# Frontend
-cd client
+### Frontend
+
+1. Install dependencies:
+
+```bash
+cd frontend
 pnpm install
+```
+
+2. Start the frontend dev server:
+
+```bash
 pnpm run dev
-
-# Backend
-cd ../server
-pip install -r requirements.txt
-uvicorn main:app --reload
 ```
 
----
+3. Open `http://localhost:3000`
 
-## Content Architecture
+The backend will start on `http://localhost:8000` by default.
 
-Prep's accuracy comes from constrained AI — the model only generates content from verified syllabus material.
+### Sync API types
 
-```
-Exam System (e.g. NCEA)
-  └── Level (e.g. Level 2)
-       └── Subject (e.g. Mathematics)
-            └── Standard (e.g. AS91261 - Algebra)
-                 └── Topics
-                      ├── Algebraic Expressions
-                      ├── Exponents
-                      ├── Quadratic Roots
-                      ├── Exponential Equations & Logs
-                      └── Linear & Quadratic Equations
+The frontend uses generated API types from `frontend/src/types/api.ts`. If the backend OpenAPI schema changes, regenerate the types with:
+
+```bash
+cd frontend
+pnpm run generate:types
 ```
 
-Each topic contains:
-- **Syllabus content** — Learning objectives extracted from official specifications
-- **Exam blueprint** — Question structure, mark allocations, achievement levels
-- **Prompt templates** — Pre-tested prompts for each question type and learning mode
+## Example files for beginners
 
----
+If you are new to this project, start with these files and examples:
 
-## Roadmap
+- `frontend/src/routes/index.tsx` — the home route and navigation entry point for the app.
+- `frontend/src/routes/products.tsx` — shows how the frontend fetches backend data and renders product rows.
+- `frontend/src/lib/api.ts` — typed API client setup using `openapi-fetch`; this is the place to centralize backend HTTP calls.
+- `frontend/src/types/api.ts` — auto-generated OpenAPI type definitions used by the frontend API client.
+- `frontend/src/routes/about.tsx` — simple static route that demonstrates a second page.
+- `frontend/src/routes/__root.tsx` — application shell and common layout for all routes.
+- `backend/routers/products.py` — FastAPI route definitions for products and endpoint structure.
+- `backend/services/product.py` — the backend business logic layer that connects FastAPI routes to Supabase.
 
-- [x] Team assembled
-- [x] Product vision defined
-- [ ] First prompt templates tested
-- [ ] MVP — Single subject quiz generation
-- [ ] User accounts and progress tracking
-- [ ] Multiple NCEA Level 2 subjects
-- [ ] Launch for NCEA exam season 2026
-- [ ] Expand to Australia (HSC / VCE)
-- [ ] Expand to UK (GCSE / A-Level)
-- [ ] Native iOS and Android app
+### Quick beginner tasks
 
----
+1. Add a new route in `frontend/src/routes/` and use `Link` from `@tanstack/react-router` to navigate to it.
+2. Add a new backend endpoint in `backend/routers/` and mirror it with a typed frontend API call in `frontend/src/lib/api.ts`.
+3. Regenerate `frontend/src/types/api.ts` after backend changes using `pnpm run generate:types`.
+4. Keep UI and data logic separated: routes handle rendering, `lib` handles API calls, and `services` handles backend data access.
 
-## Team
+## Git workflow
 
-| Role               | Focus                                      |
-|--------------------|---------------------------------------------|
-| Founder            | Product, content, marketing, development    |
-| Co-founder         | Backend, data, API integration              |
-| Tech Lead          | Architecture, mentorship, technical decisions|
-| Developer          | Development support                         |
-| Frontend Lead      | UI/UX design, frontend development          |
+Use a clear branch and PR workflow to keep development organized:
 
----
+- Create branches under `feature/` for new work, e.g. `feature/add-products-page`.
+- Keep branch names descriptive and scoped to a single feature.
+- Commit early and often with meaningful commit messages.
+- Open pull requests against the main branch when your feature is ready for review.
+- Use review comments to iterate and keep PRs small when possible.
+- Merge only after approvals and passing local checks.
 
-## Contributing
+### Recommended git commands
 
-This is currently a private project. If you're interested in contributing content for specific exam systems, reach out to the team.
+```bash
+# Create a feature branch
+git checkout -b feature/add-products-page
 
----
+# Stage and commit changes
+git add .
+git commit -m "Add products page and typed API client"
+
+# Push branch and open a PR
+git push -u origin feature/add-products-page
+```
+
+### Suggested PR workflow
+
+- Describe what the change does and why it was made.
+- Link related issues or tasks if available.
+- Keep the PR focused on one feature or fix.
+- Mention any setup steps or important notes for reviewers.
+
+## Notes
+
+- `frontend/src/types/api.ts` is auto-generated and should not be edited directly.
+- Keep API calls centralized through `frontend/src/lib/api.ts` or small wrapper modules.
+- The current frontend uses `@tanstack/react-router` for routing; new routes are added by creating files under `frontend/src/routes`.
+
+## Running the app
+
+1. Start the backend: `cd backend && uvicorn main:app --reload`
+2. Start the frontend: `cd frontend && pnpm run dev`
+3. Visit `http://localhost:3000`
+
+## Learn more
+
+- `frontend/src/routes/__root.tsx` shows the root layout and app shell.
+- `frontend/src/routes/about.tsx` shows a simple static route.
 
 ## License
 
-All rights reserved. © 2026 Prep
+This repository is private and intended as a starter template for the current Prep frontend/backend project.
