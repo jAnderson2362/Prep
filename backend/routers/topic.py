@@ -1,9 +1,10 @@
 from fastapi import APIRouter, HTTPException
+from models.topic import TopicInDB
 import services.topic as service
 
 router = APIRouter(prefix="/standards", tags=["standards"])
 
-@router.get("/{standard_id}/topics",)
+@router.get("/{standard_id}/topics", response_model=list[TopicInDB])
 def get_topics(standard_id: int):
     response = service.get_topics_by_standard(standard_id)
     if not response.data:
