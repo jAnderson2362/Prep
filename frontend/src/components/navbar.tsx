@@ -151,7 +151,7 @@ const Navbar = () => {
 
             {/* Mobile Nav */}
             <div
-                className={`fixed top-0 right-0 h-screen w-64 bg-[#1cb1ecff] transition-transform duration-300 md:hidden
+                className={`fixed top-0 right-0 h-screen w-64 bg-[#81a3f8] transition-transform duration-300 md:hidden
                 ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
             >
                 <button
