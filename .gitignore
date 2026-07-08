@@ -13,4 +13,4 @@ __unconfig*
 todos.json
 __pycache__/
 route.Tree.gen.ts
-frontend/.content-collections/
+
