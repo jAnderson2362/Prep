@@ -1,5 +1,6 @@
 import { HeadContent, Outlet, Scripts, createRootRoute, Link } from '@tanstack/react-router'
 import appCss from '../styles.css?url'
+import Navbar from "../components/navbar";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -22,6 +23,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="font-sans antialiased bg-slate-50 text-slate-900">
+        <Navbar />
         {children}
         <Scripts />
       </body>
