@@ -12,5 +12,5 @@ dist-ssr
 __unconfig*
 todos.json
 __pycache__/
-.content-collections/*
-routeTree.gen.ts
+route.Tree.gen.ts
+
