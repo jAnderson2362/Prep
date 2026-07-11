@@ -1,6 +1,7 @@
 import { HeadContent, Outlet, Scripts, createRootRoute, Link } from '@tanstack/react-router'
 import appCss from '../styles.css?url'
 import Navbar from "../components/navbar";
+import Footer from "../components/footer";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -23,7 +24,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="font-sans antialiased bg-slate-50 text-slate-900">
-        <Navbar />
         {children}
         <Scripts />
       </body>
@@ -34,11 +34,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 function RootLayout() {
   return (
     <div>
-      <div>Nav Bar</div>
+      <Navbar />
       <main>
         <Outlet />
       </main>
-      <div>Footer</div>
+      <Footer />
     </div>
   )
 }
