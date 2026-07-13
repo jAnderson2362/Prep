@@ -6,9 +6,15 @@ from models.response import APIResponse
 from routers import products, authentication, exam_system, level,standard,topic
 from core import settings
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.errors import RateLimitExceeded
+from core.limiter import limiter
 
 
 app = FastAPI()
+
+app.state.limiter = limiter
+app.add_middleware(SlowAPIMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
@@ -43,6 +49,13 @@ def handle_starlette_exception(request: Request, exc: StarletteHTTPException):
     return JSONResponse(
         status_code=exc.status_code,
         content=APIResponse(error=exc.detail, status=exc.status_code).model_dump()
+    )
+
+@app.exception_handler(RateLimitExceeded)
+def handle_rate_limit(request: Request, exc: RateLimitExceeded):
+    return JSONResponse(
+        status_code=429,
+        content=APIResponse(error="Too many requests. Please try again later.", status=429).model_dump()
     )
 
 app.include_router(products.router)
