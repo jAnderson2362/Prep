@@ -13,6 +13,7 @@ from core.limiter import limiter
 
 app = FastAPI()
 
+# Rate limitng
 app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)
 
@@ -22,6 +23,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Security headers
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    if "server" in response.headers:
+        del response.headers["server"]
+    return response
+
+# HTTPS redirect in production only
+if settings.environment == "production":
+    from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
+    app.add_middleware(HTTPSRedirectMiddleware)
 
 @app.exception_handler(HTTPException)
 def handle_http_exception(request: Request, exc: HTTPException):
