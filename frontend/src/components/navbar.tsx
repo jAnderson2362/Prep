@@ -114,13 +114,13 @@ const Navbar = () => {
 
       <div className="flex items-center gap-4 min-w-[220px] justify-end">
         <Link
-          to="/"
+          to="/sign-in"
           className="text-sm bg-white text-black hover:text-blue border border-zinc-700 px-3 py-1.5 rounded"
         >
           Sign in
         </Link>
         <Link
-          to="/"
+          to="/register"
           className="text-sm bg-black text-white hover:text-blue border border-zinc-700 px-3 py-1.5 rounded"
         >
           Register
