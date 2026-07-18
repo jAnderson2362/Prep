@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from models.response import APIResponse
-from routers import products, authentication, exam_system, level,standard,topic
+from routers import products, authentication, exam_system, level, standard, topic, ai
 from core import settings
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
