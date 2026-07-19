@@ -1,8 +1,10 @@
 import os
 from supabase import create_client, Client
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from dotenv import load_dotenv
 from pydantic import BaseModel
+from core.limiter import limiter
+from core import settings
 
 load_dotenv()
 router = APIRouter(prefix="/auth", tags=["authentication"])
@@ -15,7 +17,8 @@ class UserAuth(BaseModel):
     password: str
 
 @router.post("/sign_up")
-def sign_up(user: UserAuth):
+@limiter.limit(settings.rate_limit_default)
+def sign_up(request: Request, user: UserAuth):
 
     try: 
         response = supabase.auth.sign_up({
@@ -29,7 +32,8 @@ def sign_up(user: UserAuth):
         return {"error": str(e)}
 
 @router.post("/sign_in")
-def sign_in(user: UserAuth):
+@limiter.limit(settings.rate_limit_default)
+def sign_in(request: Request, user: UserAuth):
     try:
         response = supabase.auth.sign_in_with_password({
             "email": user.email,
@@ -42,7 +46,8 @@ def sign_in(user: UserAuth):
         return {"error": str(e)}
 
 @router.post("/sign_out")
-def sign_out():
+@limiter.limit(settings.rate_limit_default)
+def sign_out(request: Request):
     response = supabase.auth.sign_out()
 
     return {"message": "Account has signed out"}
