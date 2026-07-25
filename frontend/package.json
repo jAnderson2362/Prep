@@ -8,7 +8,7 @@
   "scripts": {
     "vite": "vite dev --port 3000",
     "dev": "concurrently -n BACKEND,FRONTEND -c blue,green \"pnpm run backend\" \"pnpm run frontend\"",
-    "backend": "cd ../backend && python3 -m uvicorn main:app --reload",
+    "backend": "cd ../backend && py -m uvicorn main:app --reload",
     "frontend": "pnpm run vite",
     "generate:types": "openapi-typescript http://localhost:8000/openapi.json -o src/types/api.ts",
     "build": "vite build",
@@ -82,11 +82,5 @@
     "typescript": "^6.0.2",
     "vite": "^8.0.0",
     "vitest": "^4.1.5"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "lightningcss"
-    ]
   }
 }

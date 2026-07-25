@@ -2,7 +2,7 @@ import json
 import os
 from dotenv import load_dotenv
 from google import genai
-from backend.models.ai import GeneratePracticeRequest, GenerateResponse, PracticeQuestion
+from models.ai import GeneratePracticeRequest, GenerateResponse, PracticeQuestion
 
 load_dotenv()
 

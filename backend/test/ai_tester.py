@@ -1,7 +1,7 @@
 import json
 
-from backend.models.ai import GeneratePracticeRequest
-from backend.services.ai import generate_practice_questions
+from models.ai import GeneratePracticeRequest
+from services.ai import generate_practice_questions
 
 
 with open("backend/test/prompt_import_test.json") as f:
