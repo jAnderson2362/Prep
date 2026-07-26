@@ -14,6 +14,7 @@ import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PracticeRouteImport } from './routes/practice'
+import { Route as ModeSelectionRouteImport } from './routes/mode-selection'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as ExamRouteImport } from './routes/exam'
 import { Route as AboutRouteImport } from './routes/about'
@@ -44,6 +45,11 @@ const PracticeRoute = PracticeRouteImport.update({
   path: '/practice',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ModeSelectionRoute = ModeSelectionRouteImport.update({
+  id: '/mode-selection',
+  path: '/mode-selection',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LearnRoute = LearnRouteImport.update({
   id: '/learn',
   path: '/learn',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/exam': typeof ExamRoute
   '/learn': typeof LearnRoute
+  '/mode-selection': typeof ModeSelectionRoute
   '/practice': typeof PracticeRoute
   '/products': typeof ProductsRoute
   '/register': typeof RegisterRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/exam': typeof ExamRoute
   '/learn': typeof LearnRoute
+  '/mode-selection': typeof ModeSelectionRoute
   '/practice': typeof PracticeRoute
   '/products': typeof ProductsRoute
   '/register': typeof RegisterRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/exam': typeof ExamRoute
   '/learn': typeof LearnRoute
+  '/mode-selection': typeof ModeSelectionRoute
   '/practice': typeof PracticeRoute
   '/products': typeof ProductsRoute
   '/register': typeof RegisterRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/exam'
     | '/learn'
+    | '/mode-selection'
     | '/practice'
     | '/products'
     | '/register'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/exam'
     | '/learn'
+    | '/mode-selection'
     | '/practice'
     | '/products'
     | '/register'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/exam'
     | '/learn'
+    | '/mode-selection'
     | '/practice'
     | '/products'
     | '/register'
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ExamRoute: typeof ExamRoute
   LearnRoute: typeof LearnRoute
+  ModeSelectionRoute: typeof ModeSelectionRoute
   PracticeRoute: typeof PracticeRoute
   ProductsRoute: typeof ProductsRoute
   RegisterRoute: typeof RegisterRoute
@@ -184,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PracticeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mode-selection': {
+      id: '/mode-selection'
+      path: '/mode-selection'
+      fullPath: '/mode-selection'
+      preLoaderRoute: typeof ModeSelectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/learn': {
       id: '/learn'
       path: '/learn'
@@ -220,6 +240,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ExamRoute: ExamRoute,
   LearnRoute: LearnRoute,
+  ModeSelectionRoute: ModeSelectionRoute,
   PracticeRoute: PracticeRoute,
   ProductsRoute: ProductsRoute,
   RegisterRoute: RegisterRoute,
