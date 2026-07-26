@@ -60,7 +60,7 @@ SUPABASE_KEY=your_supabase_service_key
 2. Install dependencies:
 
 ```bash
-python -m pip install fastapi uvicorn supabase python-dotenv slowapi google-generativeai
+python -m pip install fastapi uvicorn supabase python-dotenv slowapi google-genai
 ```
 
 ### Frontend
