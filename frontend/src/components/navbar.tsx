@@ -56,7 +56,7 @@ const Navbar = () => {
         </li>
         <li>
           <Link
-            to="/"
+            to="/subject-selection"
             activeOptions={{ exact: true }}
             activeProps={{
               className: 'border-b-2 border-blue-600 text-blue-600',
@@ -65,7 +65,7 @@ const Navbar = () => {
               className: 'hover:text-blue-600',
             }}
           >
-            Features
+            Subject Selection
           </Link>
         </li>
         <li>
