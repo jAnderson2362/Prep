@@ -2,9 +2,16 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/mode-selection")({
     component: ModeSelection,
+    validateSearch: (search) => ({
+        subject: (search.subject as string) || "",
+        level: (search.level as string) || "",
+        standard: (search.standard as string) || "",
+        topic: (search.topic as string) || "",
+    }),
 });
 
 function ModeSelection() {
+    const { subject, level, standard, topic } = Route.useSearch();
     return (
         <main className="min-h-screen bg-gradient-to-b from-[#81A3F8] to-[#F0F3FE] px-6 py-12">
             <div className="mx-auto max-w-5xl">
@@ -19,6 +26,7 @@ function ModeSelection() {
                 <div className="grid gap-6 md:grid-cols-3">
                     <Link
                         to="/learn"
+                        search={{ subject, level, standard, topic }}
                         className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                     >
                         <h2 className="mb-4 text-2xl font-semibold">
@@ -32,6 +40,7 @@ function ModeSelection() {
 
                     <Link
                         to="/practice"
+                        search={{ subject, level, standard, topic }}
                         className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                     >
                         <h2 className="mb-4 text-2xl font-semibold">
@@ -45,6 +54,7 @@ function ModeSelection() {
 
                     <Link
                         to="/exam"
+                        search={{ subject, level, standard, topic }}
                         className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                     >
                         <h2 className="mb-4 text-2xl font-semibold">

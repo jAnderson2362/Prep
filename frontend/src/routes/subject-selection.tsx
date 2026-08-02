@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate  } from '@tanstack/react-router'
-
+import { useState } from 'react'
 
 
 export const Route = createFileRoute('/subject-selection')({
@@ -8,6 +8,10 @@ export const Route = createFileRoute('/subject-selection')({
 
 function SubjectSelection() {
   const navigate = useNavigate();
+  const [subject, setSubject] = useState("")
+  const [level, setLevel] = useState("")
+  const [topic, setTopic] = useState("")
+  const [standard, setStandard] = useState("")
   return (
     <main className="min-h-screen bg-slate-50 p-6 flex justify-center">
       <div className="max-w-3xl rounded-2xl border border-slate-200 bg-white p-10 shadow-sm">
@@ -37,8 +41,9 @@ function SubjectSelection() {
           <select
             id="level"
             className="w-full rounded-lg border border-slate-300 p-2"
-      
-          >
+            value={level}
+            onChange={(e) => setLevel(e.target.value)} >
+
             <option value="">Select a Level</option>
             <option value="Level 1">Level 1</option>
             <option value="Level 2">Level 2</option>
@@ -52,7 +57,10 @@ function SubjectSelection() {
           </label>
           <select
             id="subject"
-            className="w-full rounded-lg border border-slate-300 p-2">
+            className="w-full rounded-lg border border-slate-300 p-2"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)} >
+          
             <option value="">Select a Subject</option>
             <option value="Mathematics">Mathematics</option>
             <option value="English">English</option>
@@ -66,7 +74,10 @@ function SubjectSelection() {
           </label>
           <select
             id="topic"
-            className="w-full rounded-lg border border-slate-300 p-2">
+            className="w-full rounded-lg border border-slate-300 p-2"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)} >
+
             <option value="">Select a Topic</option>
             <option value="Topic 1">Topic 1</option>
             <option value="Topic 2">Topic 2</option>
@@ -80,7 +91,10 @@ function SubjectSelection() {
           </label>
           <select
             id="standard"
-            className="w-full rounded-lg border border-slate-300 p-2">
+            className="w-full rounded-lg border border-slate-300 p-2"
+            value={standard}
+            onChange={(e) => setStandard(e.target.value)} >
+
             <option value="">Select a Standard</option>
             <option value="Standard 1">Algebra</option>
             <option value="Standard 2">Geometry</option>
@@ -90,13 +104,13 @@ function SubjectSelection() {
        
         <div className="mt-8">
           <button
-            onClick={() => navigate({ to: "/mode-selection" })}
+            onClick={() => navigate({ to: "/mode-selection", search: { subject, level, topic, standard } })}
             className="w-full rounded-lg bg-blue-600 py-2 px-4 text-white hover:bg-blue-700"
             >
               Let's go!
           </button>
         </div>
         </div>
-        </main>
+        </main> 
    )
 }
