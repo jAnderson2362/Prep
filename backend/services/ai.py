@@ -73,6 +73,7 @@ Topic: {request.topic}
 Rules:
 - Explain the concept in plain language a high school student would understand
 - Keep the explanation concise but thorough
+- Write all maths in plain text (e.g. "y = 2x + 3", not LaTeX). Do not use $ signs or backslash notation, or em dashes
 - Provide 2-3 worked examples with step-by-step solutions
 - Include key points the student should remember for exams
 - Stay aligned to the NCEA syllabus and style

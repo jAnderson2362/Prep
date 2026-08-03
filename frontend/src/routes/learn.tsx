@@ -29,6 +29,7 @@ function Learn() {
   const [content, setContent] = useState<LearnContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [step, setStep] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -83,36 +84,49 @@ function Learn() {
           <p className="text-slate-700 whitespace-pre-line">{content.explanation}</p>
         </section>
 
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Worked Examples</h2>
-          {content.worked_examples.map((example, i) => (
-            <div key={i} className="mb-6 rounded-lg border border-slate-200 p-4">
-              <p className="font-medium mb-2">{example.problem}</p>
-              <ol className="list-decimal list-inside text-slate-700 mb-2">
-                {example.steps.map((step, j) => (
-                  <li key={j}>{step}</li>
-                ))}
-              </ol>
-              <p className="font-medium text-slate-900">Answer: {example.answer}</p>
-            </div>
-          ))}
-        </section>
-
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-2">Key Points</h2>
-          <ul className="list-disc list-inside text-slate-700">
-            {content.key_points.map((point, i) => (
-              <li key={i}>{point}</li>
+        {step >= 1 && (
+          <section className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">Worked Examples</h2>
+            {content.worked_examples.map((example, i) => (
+              <div key={i} className="mb-6 rounded-lg border border-slate-200 p-4">
+                <p className="font-medium mb-2">{example.problem}</p>
+                <ol className="list-decimal list-inside text-slate-700 mb-2">
+                  {example.steps.map((s, j) => (
+                    <li key={j}>{s}</li>
+                  ))}
+                </ol>
+                <p className="font-medium text-slate-900">Answer: {example.answer}</p>
+              </div>
             ))}
-          </ul>
-        </section>
+          </section>
+        )}
 
-        <button
-          onClick={() => navigate({ to: "/mode-selection", search: { subject, level, standard, topic } })}
-          className="rounded-lg border border-slate-300 px-6 py-3 font-medium bg-white hover:bg-slate-100"
-        >
-          Back to modes
-        </button>
+        {step >= 2 && (
+          <section className="mb-8">
+            <h2 className="text-xl font-semibold mb-2">Key Points</h2>
+            <ul className="list-disc list-inside text-slate-700">
+              {content.key_points.map((point, i) => (
+                <li key={i}>{point}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {step < 2 ? (
+          <button
+            onClick={() => setStep(step + 1)}
+            className="rounded-lg bg-blue-600 py-2 px-6 text-white hover:bg-blue-700"
+          >
+            Continue
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate({ to: "/mode-selection", search: { subject, level, standard, topic } })}
+            className="rounded-lg border border-slate-300 px-6 py-3 font-medium bg-white hover:bg-slate-100"
+          >
+            Back to modes
+          </button>
+        )}
       </div>
     </main>
   );
