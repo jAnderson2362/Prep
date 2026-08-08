@@ -5,3 +5,4 @@ class Subject(BaseModel):
 
 class SubjectInDB(Subject):
     id: int
+    level_subject_id: int
