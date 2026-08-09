@@ -6,9 +6,16 @@ from models.response import APIResponse
 from routers import products, authentication, exam_system, level, standard, topic, ai
 from core import settings
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.errors import RateLimitExceeded
+from core.limiter import limiter
 
 
 app = FastAPI()
+
+# Rate limitng
+app.state.limiter = limiter
+app.add_middleware(SlowAPIMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,6 +23,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Security headers
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    if "server" in response.headers:
+        del response.headers["server"]
+    return response
+
+# HTTPS redirect in production only
+if settings.environment == "production":
+    from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
+    app.add_middleware(HTTPSRedirectMiddleware)
 
 @app.exception_handler(HTTPException)
 def handle_http_exception(request: Request, exc: HTTPException):
@@ -45,9 +68,17 @@ def handle_starlette_exception(request: Request, exc: StarletteHTTPException):
         content=APIResponse(error=exc.detail, status=exc.status_code).model_dump()
     )
 
+@app.exception_handler(RateLimitExceeded)
+def handle_rate_limit(request: Request, exc: RateLimitExceeded):
+    return JSONResponse(
+        status_code=429,
+        content=APIResponse(error="Too many requests. Please try again later.", status=429).model_dump()
+    )
+
 app.include_router(products.router)
 app.include_router(authentication.router)
 app.include_router(exam_system.router)
 app.include_router(level.router)
 app.include_router(standard.router)
 app.include_router(topic.router)
+app.include_router(ai.router)
