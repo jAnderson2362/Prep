@@ -1,0 +1,119 @@
+{
+  "questions": [
+    {
+      "question": "Expand and simplify the expression: -3x(2x - 4)",
+      "options": [
+        {
+          "id": "A",
+          "text": "-6x^2 - 12x"
+        },
+        {
+          "id": "B",
+          "text": "-6x^2 + 12x"
+        },
+        {
+          "id": "C",
+          "text": "-6x + 12"
+        },
+        {
+          "id": "D",
+          "text": "6x^2 + 12x"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Multiply -3x by 2x to get -6x^2, then multiply -3x by -4 to get +12x. Remember that multiplying two negative numbers results in a positive term."
+    },
+    {
+      "question": "Solve the equation for x: 5 - 3x = 17",
+      "options": [
+        {
+          "id": "A",
+          "text": "x = 4"
+        },
+        {
+          "id": "B",
+          "text": "x = -4"
+        },
+        {
+          "id": "C",
+          "text": "x = -7.33"
+        },
+        {
+          "id": "D",
+          "text": "x = 7.33"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Subtract 5 from both sides to get -3x = 12. Dividing both sides by -3 gives x = -4, as a positive divided by a negative is negative."
+    },
+    {
+      "question": "Factorise the quadratic expression fully: x^2 - 2x - 24",
+      "options": [
+        {
+          "id": "A",
+          "text": "(x - 6)(x + 4)"
+        },
+        {
+          "id": "B",
+          "text": "(x + 6)(x - 4)"
+        },
+        {
+          "id": "C",
+          "text": "(x - 12)(x + 2)"
+        },
+        {
+          "id": "D",
+          "text": "(x - 8)(x + 3)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "We need two numbers that multiply to -24 and add to -2. These numbers are -6 and +4, which gives the factorised form (x - 6)(x + 4)."
+    },
+    {
+      "question": "Simplify the algebraic fraction fully: (-12x^3y) / (4x^2y^2)",
+      "options": [
+        {
+          "id": "A",
+          "text": "-3x / y"
+        },
+        {
+          "id": "B",
+          "text": "3x / y"
+        },
+        {
+          "id": "C",
+          "text": "-3x^2y"
+        },
+        {
+          "id": "D",
+          "text": "-3x^5 / y^3"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Divide -12 by 4 to get -3, and subtract the exponents of the variables. This leaves x in the numerator and y in the denominator, resulting in -3x/y."
+    },
+    {
+      "question": "Find the value of 3a^2 - 5ab when a = -2 and b = -3.",
+      "options": [
+        {
+          "id": "A",
+          "text": "-18"
+        },
+        {
+          "id": "B",
+          "text": "42"
+        },
+        {
+          "id": "C",
+          "text": "-42"
+        },
+        {
+          "id": "D",
+          "text": "18"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Substitute the values to get 3(-2)^2 - 5(-2)(-3). This simplifies to 3(4) - 5(6), which is 12 - 30 = -18."
+    }
+  ]
+}
