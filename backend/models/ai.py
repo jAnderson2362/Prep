@@ -16,4 +16,21 @@ class PracticeQuestion(BaseModel):
 class GenerateResponse(BaseModel):
     questions: list[PracticeQuestion]
 
+class GenerateLearnRequest(BaseModel):
+    subject: str
+    level: str
+    standard: str
+    topic: str
+
+class WorkedExample(BaseModel):
+    problem: str
+    steps: list[str]
+    answer: str
+
+class GenerateLearnResponse(BaseModel):
+    title: str
+    explanation: str
+    worked_examples: list[WorkedExample]
+    key_points: list[str]
+
 
