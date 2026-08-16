@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
+import { ProtectedRoute } from '#/components/protected-route';
 
 type WorkedExample = {
   problem: string;
@@ -25,6 +26,14 @@ export const Route = createFileRoute('/learn')({
 })
 
 function Learn() {
+  return (
+    <ProtectedRoute>
+      <LearnPage />
+    </ProtectedRoute>
+  )
+}
+
+function LearnPage() {
   const { subject, level, standard, topic } = Route.useSearch();
   const [content, setContent] = useState<LearnContent | null>(null);
   const [loading, setLoading] = useState(true);
