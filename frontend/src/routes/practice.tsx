@@ -1,3 +1,4 @@
+import { ProtectedRoute } from '#/components/protected-route'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/practice')({
@@ -5,5 +6,9 @@ export const Route = createFileRoute('/practice')({
 })
 
 function Practice() {
-  return <div>Hello "/practice"!</div>
+  return (
+    <ProtectedRoute>
+      <div>Hello "/practice"!</div>
+    </ProtectedRoute>
+  )
 }

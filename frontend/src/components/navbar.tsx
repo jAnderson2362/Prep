@@ -1,8 +1,22 @@
-import { useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate, useRouterState } from '@tanstack/react-router'
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const navigate = useNavigate()
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token")
+    setIsLoggedIn(!!token)
+  }, [pathname])
+
+  const handleSignOut = () => {
+    localStorage.removeItem("access_token")
+    setIsLoggedIn(false)
+    navigate({ to: "/" })
+  }
   return (
     <nav className="sticky top-0 z-50 flex w-full items-center justify-between bg-[#81a3f8] px-5 py-4 shadow-sm lg:px-8 xl:px-[8%]">
       {/* Logo placeholder*/}
@@ -113,18 +127,29 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center gap-4 min-w-[220px] justify-end">
-        <Link
-          to="/sign-in"
-          className="text-sm bg-white text-black hover:text-blue border border-zinc-700 px-3 py-1.5 rounded"
-        >
-          Sign in
-        </Link>
-        <Link
-          to="/register"
-          className="text-sm bg-black text-white hover:text-blue border border-zinc-700 px-3 py-1.5 rounded"
-        >
-          Register
-        </Link>
+        {isLoggedIn ? (
+          <button
+            onClick={handleSignOut}
+            className="text-sm bg-black text-white hover:text-blue border border-zinc-700 px-3 py-1.5 rounded"
+          >
+            Sign out
+          </button>
+        ) : (
+          <>
+            <Link
+              to="/sign-in"
+              className="text-sm bg-white text-black hover:text-blue border border-zinc-700 px-3 py-1.5 rounded"
+            >
+              Sign in
+            </Link>
+            <Link
+              to="/register"
+              className="text-sm bg-black text-white hover:text-blue border border-zinc-700 px-3 py-1.5 rounded"
+            >
+              Register
+            </Link>
+          </>
+        )}
       </div>
 
       {/* Mobile borgir button */}
