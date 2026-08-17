@@ -44,9 +44,14 @@ function LearnPage() {
   useEffect(() => {
     async function fetchContent() {
       try {
+        const token = localStorage.getItem("access_token")
+
         const response = await fetch("http://localhost:8000/ai/generate-learn", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
           body: JSON.stringify({ subject, level, standard, topic }),
         });
         const data = await response.json();
