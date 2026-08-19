@@ -28,5 +28,8 @@ def verify_token(request: Request):
     if not user_response or not user_response.user:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
+    request.state.token = token
+    return user_response.user
+
     # Token is valid so return the user so endpoints can use it if they want
     return user_response.user

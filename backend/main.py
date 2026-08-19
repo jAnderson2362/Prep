@@ -9,7 +9,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.errors import RateLimitExceeded
 from core.limiter import limiter
-
+from routers import activity 
 
 app = FastAPI()
 
@@ -82,3 +82,4 @@ app.include_router(level.router)
 app.include_router(standard.router)
 app.include_router(topic.router)
 app.include_router(ai.router)
+app.include_router(activity.router)
