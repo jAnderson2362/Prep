@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SubjectSelectionRouteImport } from './routes/subject-selection'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as ModeSelectionRouteImport } from './routes/mode-selection'
@@ -33,6 +34,11 @@ const SignInRoute = SignInRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/mode-selection': typeof ModeSelectionRoute
   '/practice': typeof PracticeRoute
   '/products': typeof ProductsRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/sign-in': typeof SignInRoute
   '/subject-selection': typeof SubjectSelectionRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/mode-selection': typeof ModeSelectionRoute
   '/practice': typeof PracticeRoute
   '/products': typeof ProductsRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/sign-in': typeof SignInRoute
   '/subject-selection': typeof SubjectSelectionRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/mode-selection': typeof ModeSelectionRoute
   '/practice': typeof PracticeRoute
   '/products': typeof ProductsRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/sign-in': typeof SignInRoute
   '/subject-selection': typeof SubjectSelectionRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/mode-selection'
     | '/practice'
     | '/products'
+    | '/profile'
     | '/register'
     | '/sign-in'
     | '/subject-selection'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/mode-selection'
     | '/practice'
     | '/products'
+    | '/profile'
     | '/register'
     | '/sign-in'
     | '/subject-selection'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/mode-selection'
     | '/practice'
     | '/products'
+    | '/profile'
     | '/register'
     | '/sign-in'
     | '/subject-selection'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   ModeSelectionRoute: typeof ModeSelectionRoute
   PracticeRoute: typeof PracticeRoute
   ProductsRoute: typeof ProductsRoute
+  ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
   SignInRoute: typeof SignInRoute
   SubjectSelectionRoute: typeof SubjectSelectionRoute
@@ -181,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -243,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   ModeSelectionRoute: ModeSelectionRoute,
   PracticeRoute: PracticeRoute,
   ProductsRoute: ProductsRoute,
+  ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
   SignInRoute: SignInRoute,
   SubjectSelectionRoute: SubjectSelectionRoute,
