@@ -12,7 +12,6 @@ router = APIRouter(prefix="/activity", tags=["activity"])
 @limiter.limit(settings.rate_limit_default)
 def log_activity(request: Request, body: Activity, user=Depends(verify_token)):
     response = service.log_activity(
-        token=request.state.token,
         user_id=user.id,
         topic_id=body.topic_id,
         mode=body.mode
@@ -21,10 +20,12 @@ def log_activity(request: Request, body: Activity, user=Depends(verify_token)):
 
 @router.get("", response_model=APIResponse)
 @limiter.limit(settings.rate_limit_default)
-def get_activity(request: Request, mode: str = None, user=Depends(verify_token)):
+def get_activity(request: Request, mode: str = None, standard_id: int = None,
+                 level_subject_id: int = None, user=Depends(verify_token)):
     response = service.get_user_activity(
-        token=request.state.token,
         user_id=user.id,
-        mode=mode
+        mode=mode,
+        standard_id=standard_id,
+        level_subject_id=level_subject_id
     )
     return APIResponse(data=response.data, status=200)
