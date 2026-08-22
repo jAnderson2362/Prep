@@ -33,6 +33,8 @@ Rules:
 - Only one option may be correct.
 - correct_option_id must exactly match the id of the correct option.
 - Explanations must be clear and concise, no more than 2 sentences each.
+- Write all maths in plain text only. Do not use LaTeX, markdown math, $ signs, \( \), \[ \], backslash commands, superscript notation, or em dashes.
+- Use plain text maths such as "3x^2 - 10x - 8", "(x - 3)(x + 3)", "x = -1", and "y = 2x + 3".
 - Return valid JSON only. Do not include markdown, commentary, or code fences.
 
 Return exactly this JSON shape:
