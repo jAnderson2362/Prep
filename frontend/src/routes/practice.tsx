@@ -47,7 +47,7 @@ function Practice() {
 
   //Set question settings
   const [difficulty, setDifficulty] = useState("medium")
-  const [questionCount, setQuestionCount] = useState(10)
+  const [questionCount, setQuestionCount] = useState(3)
   const [optionalNote, setOptionalNote] = useState("")
 
   //Use state question updates.
@@ -200,13 +200,37 @@ function Practice() {
             })}
           </div>
         </div>
-        <button
-          type="button"
-          onClick={fetchQuestions}
-          className="mx-auto mt-6 block rounded-lg border border-slate-300 bg-white px-4 py-2 transition hover:opacity-80 active:scale-95"
-        >
-          New quiz
-        </button>
+        <div className="mx-auto mt-6 flex max-w-3xl flex-wrap justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedAnswers({})
+              setSubmitted(false)
+              setCurrentQuestionIndex(0)
+              setShowResults(false)
+              setShowSelectWarning(false)
+            }}
+            className="rounded-lg border border-slate-300 bg-white px-4 py-2 transition hover:opacity-80 active:scale-95"
+          >
+            Retry Quiz
+          </button>
+
+          <button
+            type="button"
+            onClick={fetchQuestions}
+            className="rounded-lg border border-slate-300 bg-white px-4 py-2 transition hover:opacity-80 active:scale-95"
+          >
+            New Quiz
+          </button>
+
+          <button
+            type="button"
+            onClick={() => navigate({ to: "/mode-selection", search: { subject, level, standard, topic } })}
+            className="rounded-lg border border-slate-300 bg-white px-4 py-2 transition hover:opacity-80 active:scale-95"
+          >
+            Select Mode
+          </button>
+        </div>
       </main>
     )
   }
@@ -220,11 +244,20 @@ function Practice() {
         </div>
       )}
 
-      <h1>Practice</h1>
+      <h1
+        className="mb-6 pt-6 text-center text-4xl font-bold text-slate-900"
+      >
+        Practice Quiz
+      </h1>
 
       <div className="space-y-4">
         <section>
+          <div className="rounded-lg border pt-4 pb-7 pl-20">
+          <h2 className="text-lg font-semibold text-slate-900">
+            Question {currentQuestionIndex + 1} of {content.questions.length}
+          </h2>
           <p>{currentQuestion.question}</p>
+          </div>
 
           <div className="mt-3 flex flex-col gap-2">
             {currentQuestion.options.map((option) => {
