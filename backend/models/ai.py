@@ -8,10 +8,16 @@ class GeneratePracticeRequest(BaseModel):
     question_count: int = Field(ge=1, le=10)
     optional_note: str | None = None
 
+class PracticeOptions(BaseModel):
+    id: str
+    text: str
+
 class PracticeQuestion(BaseModel):
     question: str
-    answer: str
+    options: list[PracticeOptions]
+    correct_option_id: str
     explanation: str
+
 
 class GenerateResponse(BaseModel):
     questions: list[PracticeQuestion]
