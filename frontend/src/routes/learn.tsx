@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
+import { ProtectedRoute } from '#/components/protected-route';
 
 type WorkedExample = {
   problem: string;
@@ -25,6 +26,14 @@ export const Route = createFileRoute('/learn')({
 })
 
 function Learn() {
+  return (
+    <ProtectedRoute>
+      <LearnPage />
+    </ProtectedRoute>
+  )
+}
+
+function LearnPage() {
   const { subject, level, standard, topic } = Route.useSearch();
   const [content, setContent] = useState<LearnContent | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,9 +44,14 @@ function Learn() {
   useEffect(() => {
     async function fetchContent() {
       try {
+        const token = localStorage.getItem("access_token")
+
         const response = await fetch("http://localhost:8000/ai/generate-learn", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
           body: JSON.stringify({ subject, level, standard, topic }),
         });
         const data = await response.json();

@@ -46,7 +46,7 @@ function Register() {
       }
 
       navigate({
-        to: "/sign-in",
+        to: "/profile",
       });
     } catch {
       setError("Unable to connect to the server.");
