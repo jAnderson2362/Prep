@@ -19,6 +19,9 @@ class UserAuth(BaseModel):
 class UpdateProfile(BaseModel):
     display_name: str
 
+class ChangePassword(BaseModel):
+    new_password: str
+
 
 @router.post("/sign_up")
 @limiter.limit(settings.rate_limit_default)
@@ -45,6 +48,7 @@ def sign_up(request: Request, user: UserAuth):
         return {"error": str(e)}
     
 current_user = None
+current_session = None
 
 @router.post("/sign_in")
 @limiter.limit(settings.rate_limit_default)
@@ -119,4 +123,23 @@ def update_profile(profile: UpdateProfile):
     except Exception as e:
         print("ERROR TYPE:", type(e))
         print("ERROR:", str(e))
+        return {"error": str(e)}
+
+@router.post("/change_password")
+def change_password(password_data: ChangePassword):
+
+    try:
+        print("NEW PASSWORD RECEIVED")
+
+        response = supabase.auth.update_user({
+            "password": password_data.new_password
+        })
+
+        print("PASSWORD UPDATED")
+        print(response)
+
+        return {"message": "Password updated"}
+
+    except Exception as e:
+        print("PASSWORD ERROR:", e)
         return {"error": str(e)}

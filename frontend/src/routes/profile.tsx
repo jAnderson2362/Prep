@@ -75,26 +75,45 @@ const loadProfile = async () => {
     setLoading(false);
     }
     };
+const handleChangePassword = async () => {
+  setError('');
+  setSuccess('');
 
-    const handleChangePassword = async () => {
-      setError('');
-      setSuccess('');
-      if(newPassword !== confirmPassword){
-      setError('Passwords do not match');
+  if (newPassword !== confirmPassword) {
+    setError('Passwords do not match');
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const response = await fetch(
+      "http://127.0.0.1:8000/auth/change_password",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          new_password: newPassword,
+        }),
+      }
+    );
+
+    const result = await response.json();
+
+    if (result.error) {
+      setError(result.error);
       return;
     }
 
-    setLoading(true);
-
-    try{
-      setSuccess('Password changed successfully!');
-      loadProfile();
-    } catch {
-      setError('Failed to change password. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    setSuccess("Password changed successfully!");
+  } catch {
+    setError("Failed to change password.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return(
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#81A3F8] to-[#F0F3FE] px-6 py-12">
