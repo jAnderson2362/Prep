@@ -61,14 +61,19 @@ function Practice() {
     setLoading(true)
     setError(false)
 
-    try {
-      /*
-      const response = await fetch("/practice-output.json")
-      */
+    const token = localStorage.getItem("access_token")
+    if (!token) {
+      navigate({ to: "/sign-in" })
+      return
+    }
 
+    try {
       const response = await fetch("http://localhost:8000/ai/generate-practice", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+        },
         body: JSON.stringify({
           subject,
           level,
@@ -253,10 +258,10 @@ function Practice() {
       <div className="space-y-4">
         <section>
           <div className="rounded-lg border pt-4 pb-7 pl-20">
-          <h2 className="text-lg font-semibold text-slate-900">
-            Question {currentQuestionIndex + 1} of {content.questions.length}
-          </h2>
-          <p>{currentQuestion.question}</p>
+            <h2 className="text-lg font-semibold text-slate-900">
+              Question {currentQuestionIndex + 1} of {content.questions.length}
+            </h2>
+            <p>{currentQuestion.question}</p>
           </div>
 
           <div className="mt-3 flex flex-col gap-2">
