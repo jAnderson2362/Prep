@@ -2,7 +2,7 @@ import json
 import os
 from dotenv import load_dotenv
 from google import genai
-from models.ai import GeneratePracticeRequest, GenerateResponse, PracticeQuestion, GenerateLearnRequest, GenerateLearnResponse
+from models.ai import GeneratePracticeRequest, GenerateResponse, PracticeQuestion, GenerateLearnRequest, GenerateLearnResponse, GenerateExamRequest, GenerateExamResponse, ExamQuestion
 
 load_dotenv()
 
@@ -123,3 +123,95 @@ def generate_learn_content(request: GenerateLearnRequest) -> GenerateLearnRespon
 
     data = json.loads(text)
     return GenerateLearnResponse(**data)
+
+AS91261_BLUEPRINT = {
+    "standard_code": "AS91261",
+    "title": "Apply algebraic methods in solving problems",
+    "level": 2,
+    "credits": 4,
+    "num_questions": 3,
+    "method_areas": [
+        "Manipulating algebraic and rational expressions",
+        "Exponents including fractional and negative exponents",
+        "Nature of the roots of a quadratic (discriminant)",
+        "Exponential equations and logarithms",
+        "Forming and solving linear and quadratic equations",
+    ],
+    "difficulty_spread": {
+        "achieved": "Direct single-method application",
+        "merit": "Multi-step, relational thinking, connecting concepts",
+        "excellence": "Real-world modelling with a quadratic; extended abstract reasoning",
+    },
+    "signature_feature": (
+        "Each paper closes with an applied modelling problem: a real-world "
+        "scenario described in bullet points, modelled with a quadratic, "
+        "answering a yes/no or find-a-value question."
+    ),
+}
+
+def build_exam_prompt(request: GenerateExamRequest, blueprint: dict) -> str:
+    method_areas = "\n".join("- " + m for m in blueprint["method_areas"])
+    return f"""
+You are an NCEA exam author creating an ORIGINAL practice exam.
+
+Standard: {blueprint['standard_code']} - {blueprint['title']}
+Level: {blueprint['level']}, Credits: {blueprint['credits']}
+
+Generate {request.question_count} short-answer exam questions that follow the
+structure and style of this standard's real external exam.
+
+Content must be drawn from these method areas, spread across them:
+{method_areas}
+
+Difficulty distribution (mirror a real paper):
+- About 40% achieved: {blueprint['difficulty_spread']['achieved']}
+- About 40% merit: {blueprint['difficulty_spread']['merit']}
+- About 20% excellence: {blueprint['difficulty_spread']['excellence']}
+
+For excellence questions, use this signature style:
+{blueprint['signature_feature']}
+
+Rules:
+- Write ENTIRELY ORIGINAL questions. Do not copy or closely paraphrase any real
+  NZQA past exam question. Use the structure and style only.
+- These are SHORT ANSWER questions, not multiple choice. Do not provide options.
+- Match NCEA phrasing: formal and imperative ("Simplify...", "Solve...",
+  "Find the value of...", "Write ... in the form ...").
+- model_answer must be the full correct answer a student would work towards.
+- explanation must show the key working or reasoning, no more than 3 sentences.
+- difficulty must be exactly one of: "achieved", "merit", "excellence".
+- method_area must be one of the method areas listed above.
+- Write all maths in plain text (e.g. "3x^2 - 10x - 8", "x = -1", "sqrt(x)").
+  Do not use LaTeX, $ signs, backslash commands, or em dashes.
+- Return valid JSON only. No markdown, commentary, or code fences.
+
+Return exactly this JSON shape:
+{{
+    "questions": [
+        {{
+            "question": "string",
+            "model_answer": "string",
+            "explanation": "string",
+            "difficulty": "achieved",
+            "method_area": "string"
+        }}
+    ]
+}}
+    """
+
+def generate_exam_questions(request: GenerateExamRequest) -> GenerateExamResponse:
+    prompt = build_exam_prompt(request, AS91261_BLUEPRINT)
+    response = client.models.generate_content(
+        model="gemini-3.5-flash",
+        contents=prompt,
+    )
+
+    text = response.text
+
+    text = text.replace("```json", "").replace("```", "").strip()
+
+    print("RAW GEMINI RESPONSE:")
+    print(repr(text))
+
+    data = json.loads(text)
+    return GenerateExamResponse(**data)
