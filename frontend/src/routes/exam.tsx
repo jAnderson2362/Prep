@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ProtectedRoute } from '#/components/protected-route'
 
 const EXAM_DURATION_SECONDS = 60 * 60 // 1 hour
@@ -47,8 +47,15 @@ function ExamPage() {
   const [timeLeft, setTimeLeft] = useState(EXAM_DURATION_SECONDS)
   const [showResults, setShowResults] = useState(false)
   const [selfMarks, setSelfMarks] = useState<Record<number, boolean>>({})
+  const [showConfirmSubmit, setShowConfirmSubmit] = useState(false)
+  const hasFetched = useRef(false)
 
   useEffect(() => {
+    if (hasFetched.current) {
+      return
+    }
+    hasFetched.current = true
+
     async function fetchExam() {
       try {
         const token = localStorage.getItem("access_token")
@@ -131,6 +138,11 @@ function ExamPage() {
   const isLowTime = timeLeft <= 5 * 60
 
   function handleSubmit() {
+    setShowConfirmSubmit(true)
+  }
+
+  function confirmSubmit() {
+    setShowConfirmSubmit(false)
     setShowResults(true)
   }
 
@@ -138,6 +150,11 @@ function ExamPage() {
     const score = content.questions.reduce((total, _, index) => {
       return selfMarks[index] ? total + 1 : total
     }, 0)
+
+    const markedCount = content.questions.reduce((total, _, index) => {
+      return selfMarks[index] !== undefined ? total + 1 : total
+    }, 0)
+    const allMarked = markedCount === content.questions.length
 
     return (
       <main className="min-h-screen bg-slate-50 p-6">
@@ -147,6 +164,12 @@ function ExamPage() {
           <p className="mb-6 text-slate-700">
             You scored {score} out of {content.questions.length}
           </p>
+
+          {!allMarked && (
+            <p className="mb-6 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+              You've marked {markedCount} of {content.questions.length} questions. Mark the rest to complete your score.
+            </p>
+          )}
 
           <div className="space-y-6">
             {content.questions.map((question, index) => {
@@ -231,6 +254,32 @@ function ExamPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 p-6">
+      {showConfirmSubmit && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="mx-4 max-w-sm rounded-lg border border-slate-200 bg-white p-6 shadow-lg">
+            <h2 className="text-lg font-semibold text-slate-900">Submit exam?</h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Once you submit, you can't return to your answers. Make sure you've reviewed any flagged questions.
+            </p>
+            <div className="mt-5 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShowConfirmSubmit(false)}
+                className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:opacity-80 active:scale-95"
+              >
+                Keep working
+              </button>
+              <button
+                type="button"
+                onClick={confirmSubmit}
+                className="rounded-lg border border-blue-600 bg-blue-600 px-4 py-2 text-sm font-medium text-white transition hover:opacity-80 active:scale-95"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="mx-auto max-w-3xl">
         <h1 className="mb-6 text-3xl font-semibold">Exam</h1>
 
