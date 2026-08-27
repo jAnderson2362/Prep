@@ -45,6 +45,8 @@ function ExamPage() {
   const [answers, setAnswers] = useState<Record<number, string>>({})
   const [flagged, setFlagged] = useState<Record<number, boolean>>({})
   const [timeLeft, setTimeLeft] = useState(EXAM_DURATION_SECONDS)
+  const [showResults, setShowResults] = useState(false)
+  const [selfMarks, setSelfMarks] = useState<Record<number, boolean>>({})
 
   useEffect(() => {
     async function fetchExam() {
@@ -82,12 +84,12 @@ function ExamPage() {
   }, [subject, level, standard, topic])
 
   useEffect(() => {
-    if (loading || error || !content) {
+    if (loading || error || !content || showResults) {
       return
     }
 
     if (timeLeft <= 0) {
-      // auto-submit handling comes in the submit stage
+      setShowResults(true) // auto-submit handling comes in the submit stage
       return
     }
 
@@ -96,7 +98,7 @@ function ExamPage() {
     }, 1000)
 
     return () => clearInterval(timerId)
-  }, [loading, error, content, timeLeft])
+  }, [loading, error, content, timeLeft, showResults])
 
   if (loading) {
     return (
@@ -127,6 +129,105 @@ function ExamPage() {
   const seconds = timeLeft % 60
   const formattedTime = `${minutes}:${seconds.toString().padStart(2, "0")}`
   const isLowTime = timeLeft <= 5 * 60
+
+  function handleSubmit() {
+    setShowResults(true)
+  }
+
+  if (showResults) {
+    const score = content.questions.reduce((total, _, index) => {
+      return selfMarks[index] ? total + 1 : total
+    }, 0)
+
+    return (
+      <main className="min-h-screen bg-slate-50 p-6">
+        <div className="mx-auto max-w-3xl">
+          <h1 className="mb-6 text-3xl font-semibold">Results</h1>
+
+          <p className="mb-6 text-slate-700">
+            You scored {score} out of {content.questions.length}
+          </p>
+
+          <div className="space-y-6">
+            {content.questions.map((question, index) => {
+              const studentAnswer = answers[index] || ""
+              const mark = selfMarks[index]
+
+              return (
+                <section
+                  key={index}
+                  className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm"
+                >
+                  <p className="text-lg font-semibold text-slate-900">
+                    Question {index + 1}
+                  </p>
+
+                  <p className="mt-3 whitespace-pre-line text-slate-800">
+                    {question.question}
+                  </p>
+
+                  <div className="mt-4">
+                    <p className="text-sm font-semibold text-slate-500">Your answer</p>
+                    <p className="mt-1 whitespace-pre-line text-slate-800">
+                      {studentAnswer.trim() !== "" ? studentAnswer : "(no answer)"}
+                    </p>
+                  </div>
+
+                  <div className="mt-4">
+                    <p className="text-sm font-semibold text-slate-500">Model answer</p>
+                    <p className="mt-1 whitespace-pre-line text-slate-800">
+                      {question.model_answer}
+                    </p>
+                  </div>
+
+                  <p className="mt-3 text-sm text-slate-700">
+                    {question.explanation}
+                  </p>
+
+                  <div className="mt-4 flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setSelfMarks({ ...selfMarks, [index]: true })}
+                      className={
+                        mark === true
+                          ? "rounded-lg border border-green-500 bg-green-100 px-4 py-2 text-sm font-medium text-green-800"
+                          : "rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700"
+                      }
+                    >
+                      I got this right
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setSelfMarks({ ...selfMarks, [index]: false })}
+                      className={
+                        mark === false
+                          ? "rounded-lg border border-red-500 bg-red-100 px-4 py-2 text-sm font-medium text-red-800"
+                          : "rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700"
+                      }
+                    >
+                      I got this wrong
+                    </button>
+                  </div>
+                </section>
+              )
+            })}
+          </div>
+
+          <div className="mt-6">
+            <button
+              type="button"
+              disabled
+              className="rounded-lg border border-slate-300 bg-white px-6 py-2 font-medium text-slate-400 disabled:opacity-50"
+            >
+              Save results (coming soon)
+            </button>
+          </div>
+
+        </div>
+      </main>
+    )
+  }
 
   return (
     <main className="min-h-screen bg-slate-50 p-6">
@@ -225,9 +326,7 @@ function ExamPage() {
             {isLastQuestion && (
               <button
                 type="button"
-                onClick={() => {
-                  // submit handling comes in a later stage
-                }}
+                onClick={handleSubmit}
                 className="rounded-lg border border-slate-300 bg-white px-8 py-2 transition hover:opacity-80 active:scale-95"
               >
                 Finish
@@ -248,6 +347,6 @@ function ExamPage() {
           </div>
         </div>
       </div>
-    </main>
+    </main >
   )
 }
