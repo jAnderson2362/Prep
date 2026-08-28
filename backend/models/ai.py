@@ -39,4 +39,19 @@ class GenerateLearnResponse(BaseModel):
     worked_examples: list[WorkedExample]
     key_points: list[str]
 
+class GenerateExamRequest(BaseModel):
+    subject: str
+    level: str
+    standard: str
+    topic: str
+    question_count: int = Field(ge=1, le=20)
 
+class ExamQuestion(BaseModel):
+    question: str
+    model_answer: str
+    explanation: str
+    difficulty: str
+    method_area: str
+
+class GenerateExamResponse(BaseModel):
+    questions: list[ExamQuestion]
