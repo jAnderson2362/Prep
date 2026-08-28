@@ -149,6 +149,46 @@ AS91261_BLUEPRINT = {
     ),
 }
 
+FALLBACK_EXAM = {
+    "questions": [
+        {
+            "question": "Simplify, writing your answer with positive exponents: (27x^9 / y^-3)^(1/3)",
+            "model_answer": "3x^3 * y",
+            "explanation": "Apply the 1/3 power to each factor: 27^(1/3) = 3, (x^9)^(1/3) = x^3, and (y^-3)^(1/3) = y^-1. Rewriting with a positive exponent gives 3x^3 * y.",
+            "difficulty": "achieved",
+            "method_area": "Exponents including fractional and negative exponents",
+        },
+        {
+            "question": "Simplify fully: (3x^2 - 5x - 2) / (x^2 - 4)",
+            "model_answer": "(3x + 1) / (x + 2)",
+            "explanation": "Factorise the numerator to (3x + 1)(x - 2) and the denominator to (x - 2)(x + 2). Cancel the common factor (x - 2).",
+            "difficulty": "achieved",
+            "method_area": "Manipulating algebraic and rational expressions",
+        },
+        {
+            "question": "Find the range of values of k for which the equation x^2 + kx + 9 = 0 has no real roots.",
+            "model_answer": "-6 < k < 6",
+            "explanation": "For no real roots the discriminant is negative: k^2 - 4(1)(9) < 0, so k^2 < 36, giving -6 < k < 6.",
+            "difficulty": "merit",
+            "method_area": "Nature of the roots of a quadratic (discriminant)",
+        },
+        {
+            "question": "Solve the equation 3^(2x) - 12 * 3^x + 27 = 0.",
+            "model_answer": "x = 1 or x = 2",
+            "explanation": "Let u = 3^x, giving u^2 - 12u + 27 = 0, which factorises to (u - 3)(u - 9) = 0. So 3^x = 3 gives x = 1, and 3^x = 9 gives x = 2.",
+            "difficulty": "merit",
+            "method_area": "Exponential equations and logarithms",
+        },
+        {
+            "question": "A rectangular vegetable plot has a length 5 metres greater than its width. A path of uniform width 1 metre is laid around the outside of the plot. The total area of the plot and path combined is 84 square metres. Find the width of the plot.",
+            "model_answer": "width = 5 metres",
+            "explanation": "Let the width be w, so the length is w + 5. Including the 1 m path on all sides, the outer dimensions are (w + 2) by (w + 7). Then (w + 2)(w + 7) = 84 gives w^2 + 9w - 70 = 0, which factorises to (w - 5)(w + 14) = 0. Since width must be positive, w = 5.",
+            "difficulty": "excellence",
+            "method_area": "Forming and solving linear and quadratic equations",
+        },
+    ]
+}
+
 def build_exam_prompt(request: GenerateExamRequest, blueprint: dict) -> str:
     method_areas = "\n".join("- " + m for m in blueprint["method_areas"])
     return f"""
@@ -200,18 +240,21 @@ Return exactly this JSON shape:
     """
 
 def generate_exam_questions(request: GenerateExamRequest) -> GenerateExamResponse:
-    prompt = build_exam_prompt(request, AS91261_BLUEPRINT)
-    response = client.models.generate_content(
-        model="gemini-3.5-flash",
-        contents=prompt,
-    )
+    try:
+        prompt = build_exam_prompt(request, AS91261_BLUEPRINT)
+        response = client.models.generate_content(
+            model="gemini-3.5-flash",
+            contents=prompt,
+        )
 
-    text = response.text
+        text = response.text
+        text = text.replace("```json", "").replace("```", "").strip()
 
-    text = text.replace("```json", "").replace("```", "").strip()
+        print("RAW GEMINI RESPONSE:")
+        print(repr(text))
 
-    print("RAW GEMINI RESPONSE:")
-    print(repr(text))
-
-    data = json.loads(text)
-    return GenerateExamResponse(**data)
+        data = json.loads(text)
+        return GenerateExamResponse(**data)
+    except Exception as e:
+        print(f"Exam generation failed, serving fallback: {e}")
+        return GenerateExamResponse(**FALLBACK_EXAM)

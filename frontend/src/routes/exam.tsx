@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import { ProtectedRoute } from '#/components/protected-route'
 
 const EXAM_DURATION_SECONDS = 60 * 60 // 1 hour
+const EXAM_STORAGE_KEY = "exam-progress"
 
 type ExamQuestion = {
   question: string
@@ -48,6 +49,7 @@ function ExamPage() {
   const [showResults, setShowResults] = useState(false)
   const [selfMarks, setSelfMarks] = useState<Record<number, boolean>>({})
   const [showConfirmSubmit, setShowConfirmSubmit] = useState(false)
+  const [endTime, setEndTime] = useState<number | null>(null)
   const hasFetched = useRef(false)
 
   useEffect(() => {
@@ -55,6 +57,26 @@ function ExamPage() {
       return
     }
     hasFetched.current = true
+
+    const storageKey = `${EXAM_STORAGE_KEY}-${standard}-${topic}`
+    const saved = sessionStorage.getItem(storageKey)
+
+    if (saved) {
+      try {
+        const state = JSON.parse(saved)
+        setContent(state.content)
+        setAnswers(state.answers || {})
+        setFlagged(state.flagged || {})
+        setSelfMarks(state.selfMarks || {})
+        setCurrentQuestionIndex(state.currentQuestionIndex || 0)
+        setEndTime(state.endTime)
+        setShowResults(state.showResults || false)
+        setLoading(false)
+        return
+      } catch {
+        // corrupted save - fall through and generate a fresh exam
+      }
+    }
 
     async function fetchExam() {
       try {
@@ -81,6 +103,7 @@ function ExamPage() {
 
         const data: ExamResponse = await response.json()
         setContent(data)
+        setEndTime(Date.now() + EXAM_DURATION_SECONDS * 1000)
       } catch {
         setError(true)
       } finally {
@@ -91,21 +114,45 @@ function ExamPage() {
   }, [subject, level, standard, topic])
 
   useEffect(() => {
-    if (loading || error || !content || showResults) {
+    if (loading || error || !content) {
       return
     }
 
-    if (timeLeft <= 0) {
-      setShowResults(true) // auto-submit handling comes in the submit stage
+    const storageKey = `${EXAM_STORAGE_KEY}-${standard}-${topic}`
+    const state = {
+      content,
+      answers,
+      flagged,
+      selfMarks,
+      currentQuestionIndex,
+      endTime,
+      showResults,
+    }
+    sessionStorage.setItem(storageKey, JSON.stringify(state))
+  }, [content, answers, flagged, selfMarks, currentQuestionIndex, endTime, showResults, loading, error, standard, topic])
+
+  useEffect(() => {
+    if (loading || error || !content || showResults || endTime === null) {
       return
     }
 
-    const timerId = setInterval(() => {
-      setTimeLeft((prev) => prev - 1)
-    }, 1000)
+     const end = endTime
+
+    function tick() {
+      const secondsLeft = Math.round((end - Date.now()) / 1000)
+      if (secondsLeft <= 0) {
+        setTimeLeft(0)
+        setShowResults(true)
+      } else {
+        setTimeLeft(secondsLeft)
+      }
+    }
+
+    tick() // run immediately so the display is correct on load
+    const timerId = setInterval(tick, 1000)
 
     return () => clearInterval(timerId)
-  }, [loading, error, content, timeLeft, showResults])
+  }, [loading, error, content, showResults, endTime])
 
   if (loading) {
     return (
