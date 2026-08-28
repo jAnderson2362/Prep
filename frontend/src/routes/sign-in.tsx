@@ -46,7 +46,7 @@ function SignIn() {
       }
 
       navigate({
-        to: "/subject-selection",
+        to: "/profile",
       });
     } catch {
       setError("Unable to connect to the server.");
