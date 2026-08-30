@@ -20,21 +20,6 @@ function SubjectSelection() {
   const [standardId, setStandardId] = useState<number | null>(null)
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const accessToken = params.get("access_token");
-
-    if (accessToken) {
-      localStorage.setItem("access_token", accessToken);
-
-      window.history.replaceState(
-        {},
-        document.title,
-        window.location.pathname
-      );
-    }
-  }, []);
-
-  useEffect(() => {
     if (!level) return;
 
     const levelId = level === "Level 1" ? 1 : level === "Level 2" ? 2 : 3;

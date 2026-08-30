@@ -40,6 +40,23 @@ const loadProfile = async () => {
     setError("Unable to load profile.");
   }
 };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const accessToken = params.get("access_token");
+
+    if (accessToken) {
+      localStorage.setItem("access_token", accessToken);
+
+      window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+      );
+      window.location.reload();
+    }
+  }, []);
+
   
     useEffect(() => {
       loadProfile();

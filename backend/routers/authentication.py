@@ -70,7 +70,7 @@ def google_callback(code: str):
     })
 
     return RedirectResponse(
-    f"http://localhost:3000/subject-selection?access_token={response.session.access_token}"
+    f"http://localhost:3000/profile?access_token={response.session.access_token}"
     )
 
 @router.post("/sign_in")
