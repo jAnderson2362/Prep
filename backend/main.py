@@ -3,12 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from models.response import APIResponse
-from routers import products, authentication, exam_system, level, standard, topic, ai
+from routers import products, authentication, exam_system, level, standard, topic, ai, results, progress
 from core import settings
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.errors import RateLimitExceeded
 from core.limiter import limiter
+from routers import progress
 
 
 app = FastAPI()
@@ -82,3 +83,5 @@ app.include_router(level.router)
 app.include_router(standard.router)
 app.include_router(topic.router)
 app.include_router(ai.router)
+app.include_router(results.router)
+app.include_router(progress.router)
