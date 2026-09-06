@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 from core.limiter import limiter
 from core import settings
+from core.auth import verify_token
 
 load_dotenv()
 router = APIRouter(prefix="/auth", tags=["authentication"])
@@ -111,20 +112,14 @@ def sign_out(request: Request):
     return {"message": "Account has signed out"}
 
 @router.get("/profile")
-def get_profile():
-  
-  global current_user
+def get_profile(request: Request):
+    user = verify_token(request)
 
-  print("Current user:", current_user)
-
-  if current_user is None:
-    return {"error": "User is not signed in"}
-
-  return {
-    "email": current_user.email,
-    "created_at": current_user.created_at,
-    "display_name": current_user.user_metadata.get("display_name", "")
-  }
+    return {
+        "email": user.email,
+        "created_at": user.created_at,
+        "display_name": user.user_metadata.get("display_name", "")
+    }
 
 @router.post("/update_profile")
 def update_profile(profile: UpdateProfile):
