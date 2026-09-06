@@ -55,6 +55,25 @@ function Register() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/auth/google");
+      const result = await response.json();
+
+      console.log("Google OAuth result:", result);
+
+      if (!response.ok || !result.url) {
+        setError(result.error ?? "Unable to register with Google.");
+        return;
+      }
+
+      window.location.href = result.url;
+    } catch (error) {
+      console.error("Google registration failed:", error);
+      setError("Unable to register with Google.");
+    }
+  };
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#81A3F8] to-[#F0F3FE] px-6 py-12">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
@@ -119,6 +138,21 @@ function Register() {
             {loading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
+
+        <div className="my-2 text-center text-sm text-slate-500"></div>
+
+        <button
+          type="button"
+          onClick={handleGoogleSignIn}
+          className="mt-4 flex w-full items-center justify-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700 hover:underline active:scale-[0.98] active:text-blue-800"
+        >
+          <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt=""
+            className="h-4 w-4"
+          />
+          Continue with Google
+        </button>
 
         <p className="mt-6 text-center text-sm text-slate-600">
           Already have an account?{" "}
