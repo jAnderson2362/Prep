@@ -1,10 +1,12 @@
 import os
 from supabase import create_client, Client
 from fastapi import APIRouter, Request
+from fastapi.responses import RedirectResponse
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from core.limiter import limiter
 from core import settings
+from core.auth import verify_token
 
 load_dotenv()
 router = APIRouter(prefix="/auth", tags=["authentication"])
@@ -50,6 +52,28 @@ def sign_up(request: Request, user: UserAuth):
 current_user = None
 current_session = None
 
+##Google OAuth
+@router.get("/google")
+def google_sign_in():
+    response = supabase.auth.sign_in_with_oauth({
+        "provider": "google",
+        "options" : {
+            "redirect_to": "http://localhost:8000/auth/callback"
+        }
+    })
+
+    return {"url": response.url}
+
+@router.get("/callback")
+def google_callback(code: str):
+    response = supabase.auth.exchange_code_for_session({
+        "auth_code": code
+    })
+
+    return RedirectResponse(
+    f"http://localhost:3000/profile?access_token={response.session.access_token}"
+    )
+
 @router.post("/sign_in")
 @limiter.limit(settings.rate_limit_default)
 def sign_in(request: Request, user: UserAuth):
@@ -88,20 +112,14 @@ def sign_out(request: Request):
     return {"message": "Account has signed out"}
 
 @router.get("/profile")
-def get_profile():
-  
-  global current_user
+def get_profile(request: Request):
+    user = verify_token(request)
 
-  print("Current user:", current_user)
-
-  if current_user is None:
-    return {"error": "User is not signed in"}
-
-  return {
-    "email": current_user.email,
-    "created_at": current_user.created_at,
-    "display_name": current_user.user_metadata.get("display_name", "")
-  }
+    return {
+        "email": user.email,
+        "created_at": user.created_at,
+        "display_name": user.user_metadata.get("display_name", "")
+    }
 
 @router.post("/update_profile")
 def update_profile(profile: UpdateProfile):
