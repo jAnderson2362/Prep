@@ -12,11 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SubjectSelectionRouteImport } from './routes/subject-selection'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as ModeSelectionRouteImport } from './routes/mode-selection'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as ExamRouteImport } from './routes/exam'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -33,6 +35,11 @@ const SignInRoute = SignInRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -60,6 +67,11 @@ const ExamRoute = ExamRouteImport.update({
   path: '/exam',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -74,11 +86,13 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRoute
   '/exam': typeof ExamRoute
   '/learn': typeof LearnRoute
   '/mode-selection': typeof ModeSelectionRoute
   '/practice': typeof PracticeRoute
   '/products': typeof ProductsRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/sign-in': typeof SignInRoute
   '/subject-selection': typeof SubjectSelectionRoute
@@ -86,11 +100,13 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRoute
   '/exam': typeof ExamRoute
   '/learn': typeof LearnRoute
   '/mode-selection': typeof ModeSelectionRoute
   '/practice': typeof PracticeRoute
   '/products': typeof ProductsRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/sign-in': typeof SignInRoute
   '/subject-selection': typeof SubjectSelectionRoute
@@ -99,11 +115,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRoute
   '/exam': typeof ExamRoute
   '/learn': typeof LearnRoute
   '/mode-selection': typeof ModeSelectionRoute
   '/practice': typeof PracticeRoute
   '/products': typeof ProductsRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
   '/sign-in': typeof SignInRoute
   '/subject-selection': typeof SubjectSelectionRoute
@@ -113,11 +131,13 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/dashboard'
     | '/exam'
     | '/learn'
     | '/mode-selection'
     | '/practice'
     | '/products'
+    | '/profile'
     | '/register'
     | '/sign-in'
     | '/subject-selection'
@@ -125,11 +145,13 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/dashboard'
     | '/exam'
     | '/learn'
     | '/mode-selection'
     | '/practice'
     | '/products'
+    | '/profile'
     | '/register'
     | '/sign-in'
     | '/subject-selection'
@@ -137,11 +159,13 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/dashboard'
     | '/exam'
     | '/learn'
     | '/mode-selection'
     | '/practice'
     | '/products'
+    | '/profile'
     | '/register'
     | '/sign-in'
     | '/subject-selection'
@@ -150,11 +174,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  DashboardRoute: typeof DashboardRoute
   ExamRoute: typeof ExamRoute
   LearnRoute: typeof LearnRoute
   ModeSelectionRoute: typeof ModeSelectionRoute
   PracticeRoute: typeof PracticeRoute
   ProductsRoute: typeof ProductsRoute
+  ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
   SignInRoute: typeof SignInRoute
   SubjectSelectionRoute: typeof SubjectSelectionRoute
@@ -181,6 +207,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -218,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -238,11 +278,13 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  DashboardRoute: DashboardRoute,
   ExamRoute: ExamRoute,
   LearnRoute: LearnRoute,
   ModeSelectionRoute: ModeSelectionRoute,
   PracticeRoute: PracticeRoute,
   ProductsRoute: ProductsRoute,
+  ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
   SignInRoute: SignInRoute,
   SubjectSelectionRoute: SubjectSelectionRoute,

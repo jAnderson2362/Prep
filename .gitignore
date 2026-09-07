@@ -14,3 +14,6 @@ todos.json
 __pycache__/
 route.Tree.gen.ts
 
+# Local generated AI mock data
+backend/test/output.json
+frontend/public/practice-output.json

@@ -2,9 +2,13 @@ import os
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
-from fastapi import APIRouter
 from models.progress import ProgressCreate
 from models.response import APIResponse
+from fastapi import APIRouter, Request, Depends
+from core.limiter import limiter
+from core.auth import verify_token
+from core import settings
+import services.progress as service
 
 load_dotenv()
 
@@ -41,3 +45,14 @@ def create_progress(progress: ProgressCreate):
             error=str(e),
             status=500
         )
+
+@router.post("", response_model=APIResponse)
+@limiter.limit(settings.rate_limit_default)
+def save_progress(request: Request, body: Progress, user=Depends(verify_token)):
+    response = service.save_progress(
+        user_id=user.id,
+        topic_id=body.topic_id,
+        score=body.score,
+        total_questions=body.total_questions
+    )
+    return APIResponse(data=response.data, status=201)

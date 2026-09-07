@@ -4,3 +4,4 @@ supabase
 python-dotenv
 slowapi
 google-genai
+pydantic_settings

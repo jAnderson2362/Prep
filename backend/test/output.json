@@ -1,0 +1,119 @@
+{
+  "questions": [
+    {
+      "question": "Simplify the expression: -3(2x - 5) - 4(x - 2)",
+      "options": [
+        {
+          "id": "A",
+          "text": "-10x + 23"
+        },
+        {
+          "id": "B",
+          "text": "-10x + 7"
+        },
+        {
+          "id": "C",
+          "text": "-2x + 23"
+        },
+        {
+          "id": "D",
+          "text": "-10x - 7"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Expanding the brackets gives -6x + 15 - 4x + 8, remembering that multiplying two negatives makes a positive. Grouping like terms results in -10x + 23."
+    },
+    {
+      "question": "Solve the following equation for x: 5 - 2(3x - 4) = 19",
+      "options": [
+        {
+          "id": "A",
+          "text": "x = -1"
+        },
+        {
+          "id": "B",
+          "text": "x = 1"
+        },
+        {
+          "id": "C",
+          "text": "x = -3.67"
+        },
+        {
+          "id": "D",
+          "text": "x = -2"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Expanding the brackets gives 5 - 6x + 8 = 19, which simplifies to 13 - 6x = 19. Subtracting 13 gives -6x = 6, and dividing by -6 results in x = -1."
+    },
+    {
+      "question": "Factorise the quadratic expression fully: 3x^2 - 10x - 8",
+      "options": [
+        {
+          "id": "A",
+          "text": "(3x + 2)(x - 4)"
+        },
+        {
+          "id": "B",
+          "text": "(3x - 2)(x + 4)"
+        },
+        {
+          "id": "C",
+          "text": "(3x - 4)(x + 2)"
+        },
+        {
+          "id": "D",
+          "text": "(3x + 4)(x - 2)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "We need factors of 3 * -8 = -24 that add up to -10, which are -12 and 2. Splitting the middle term and factorising by grouping gives (3x + 2)(x - 4)."
+    },
+    {
+      "question": "Simplify the following algebraic fraction: (x^2 - 9) / (3 - x)",
+      "options": [
+        {
+          "id": "A",
+          "text": "-x - 3"
+        },
+        {
+          "id": "B",
+          "text": "x + 3"
+        },
+        {
+          "id": "C",
+          "text": "x - 3"
+        },
+        {
+          "id": "D",
+          "text": "-x + 3"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Factorise the numerator to (x - 3)(x + 3) and rewrite the denominator as -(x - 3). Cancelling the common factor (x - 3) leaves -(x + 3), which equals -x - 3."
+    },
+    {
+      "question": "If a = -3 and b = -2, find the value of -a^2 - 4ab",
+      "options": [
+        {
+          "id": "A",
+          "text": "-33"
+        },
+        {
+          "id": "B",
+          "text": "-15"
+        },
+        {
+          "id": "C",
+          "text": "15"
+        },
+        {
+          "id": "D",
+          "text": "33"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Substituting the values gives -(-3)^2 - 4(-3)(-2). This simplifies to -(9) - 24, which equals -33."
+    }
+  ]
+}

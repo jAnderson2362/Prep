@@ -3,9 +3,16 @@ import { ProtectedRoute } from '#/components/protected-route';
 
 export const Route = createFileRoute('/mode-selection')({
   component: ModeSelection,
+  validateSearch: (search) => ({
+  subject: (search.subject as string) || "",
+  level: (search.level as string) || "",
+  standard: (search.standard as string) || "",
+  topic: (search.topic as string) || "",
+}),
 });
 
 function ModeSelection() {
+  const { subject, level, standard, topic } = Route.useSearch();
   return (
     <ProtectedRoute>
       <main className="min-h-screen bg-gradient-to-b from-[#81A3F8] to-[#F0F3FE] px-6 py-12">
@@ -18,40 +25,43 @@ function ModeSelection() {
             Select how you'd like to revise this topic.
           </p>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            <Link
-              to="/learn"
-              className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-            >
-              <h2 className="mb-4 text-2xl font-semibold">
-                Learn
-              </h2>
+        <div className="grid gap-6 md:grid-cols-3">
+          <Link
+            to="/learn"
+            search={{ subject, level, standard, topic }}
+            className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+          >
+            <h2 className="mb-4 text-2xl font-semibold">
+              Learn
+            </h2>
 
               <p className="text-slate-600">
                 description
               </p>
             </Link>
 
-            <Link
-              to="/practice"
-              className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-            >
-              <h2 className="mb-4 text-2xl font-semibold">
-                Practice
-              </h2>
+          <Link
+            to="/practice"
+            search={{ subject, level, standard, topic }}
+            className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+          >
+            <h2 className="mb-4 text-2xl font-semibold">
+              Practice
+            </h2>
 
               <p className="text-slate-600">
                 description
               </p>
             </Link>
 
-            <Link
-              to="/exam"
-              className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-            >
-              <h2 className="mb-4 text-2xl font-semibold">
-                Exam
-              </h2>
+          <Link
+            to="/exam"
+            search={{ subject, level, standard, topic }}
+            className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+          >
+            <h2 className="mb-4 text-2xl font-semibold">
+              Exam
+            </h2>
 
               <p className="text-slate-600">
                 description

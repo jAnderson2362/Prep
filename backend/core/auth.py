@@ -1,10 +1,7 @@
 from fastapi import Request, HTTPException
-from supabase import create_client, Client
-import os
+from core.database import supabase
 
-url: str = os.getenv("SUPABASE_URL")
-key: str = os.getenv("SUPABASE_KEY")
-supabase: Client = create_client(url, key)
+
 
 
 def verify_token(request: Request):
@@ -27,6 +24,9 @@ def verify_token(request: Request):
     # 4. If Supabase didn't return a user, the token is not valid
     if not user_response or not user_response.user:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+    request.state.token = token
+    return user_response.user
 
     # Token is valid so return the user so endpoints can use it if they want
     return user_response.user

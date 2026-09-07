@@ -124,6 +124,22 @@ const Navbar = () => {
             Contact
           </Link>
         </li>
+        <li>
+          {isLoggedIn && (
+            <Link
+              to="/dashboard"
+              activeOptions={{ exact: true }}
+              activeProps={{
+                className: 'border-b-2 border-blue-600 text-blue-600',
+              }}
+              inactiveProps={{
+                className: 'hover:text-blue-600',
+              }}
+            >
+              Dashboard
+            </Link>
+          )}
+        </li>
       </ul>
 
       <div className="flex items-center gap-4 min-w-[220px] justify-end">

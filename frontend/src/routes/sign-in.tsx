@@ -46,12 +46,31 @@ function SignIn() {
       }
 
       navigate({
-        to: "/subject-selection",
+        to: "/profile",
       });
     } catch {
       setError("Unable to connect to the server.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/auth/google");
+      const result = await response.json();
+
+      console.log("Google OAuth result:", result);
+
+      if (!response.ok || !result.url) {
+        setError(result.error ?? "Unable to sign in using Google");
+        return;
+      }
+
+      window.location.href = result.url;
+    } catch (error) {
+      console.error("Google sign in failed:", error);
+      setError("Unable to connect to the server.");
     }
   };
 
@@ -105,6 +124,21 @@ function SignIn() {
             {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
+
+        <div className="my-2 text-center text-sm text-slate-500"></div>
+
+        <button
+          type="button"
+          onClick={handleGoogleSignIn}
+          className="mt-4 flex w-full items-center justify-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700 hover:underline active:scale-[0.98] active:text-blue-800"
+        >
+          <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt=""
+            className="h-4 w-4"
+          />
+          Continue with Google
+        </button>
 
         <p className="mt-6 text-center text-sm text-slate-600">
           Don't have an account?{" "}
