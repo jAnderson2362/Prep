@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
-from models.progress import ProgressCreate
+from models.progress import ProgressCreate, Progress
 from models.response import APIResponse
 from fastapi import APIRouter, Request, Depends
 from core.limiter import limiter
