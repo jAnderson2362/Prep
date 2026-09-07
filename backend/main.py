@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from models.response import APIResponse
-from routers import products, authentication, exam_system, level, standard, topic, ai, activity
+from routers import products, authentication, exam_system, level, standard, topic, ai, activity, progress
 from core import settings
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from slowapi.middleware import SlowAPIMiddleware
@@ -82,3 +82,4 @@ app.include_router(standard.router)
 app.include_router(topic.router)
 app.include_router(ai.router)
 app.include_router(activity.router)
+app.include_router(progress.router)
