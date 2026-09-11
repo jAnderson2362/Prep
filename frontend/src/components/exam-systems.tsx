@@ -37,7 +37,7 @@ const Card = ({ system }: { system: ExamSystem }) => {
   );
 
   const className =
-    "block rounded-xl border border-slate-200 bg-white px-6 py-5 shadow-sm transition";
+    "block h-[147px] w-full max-w-[325px] rounded-xl border border-slate-200 bg-white px-6 py-5 shadow-sm transition";
 
   if (system.to) {
     return (
@@ -55,7 +55,7 @@ const ExamSystems = () => {
     <section className="mx-auto max-w-7xl px-6 py-16 font-inter lg:px-8 xl:px-[8%]">
       <h2 className="text-xl font-bold text-slate-900">Exam Systems</h2>
 
-      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-10 sm:grid-cols-[repeat(2,325px)] lg:grid-cols-[repeat(3,325px)]">
         {examSystems.map((system) => (
           <Card key={system.name} system={system} />
         ))}
