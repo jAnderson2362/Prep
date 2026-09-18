@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { ArrowRight } from 'lucide-react'
 
@@ -26,6 +27,12 @@ const pillars = [
 ]
 
 function About() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem('access_token'))
+  }, [])
+
   return (
     <PageShell tone="hero">
       <PageHeader
@@ -68,26 +75,28 @@ function About() {
         ))}
       </Stagger>
 
-      <Reveal inView className="mt-6">
-        <Card variant="soft">
-          <CardContent className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-start gap-4">
-              <div>
-                <h2 className="text-lg font-bold">Ready to try it?</h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Create a free account and pick your first topic.
-                </p>
+      {!isLoggedIn && (
+        <Reveal inView className="mt-6">
+          <Card variant="soft">
+            <CardContent className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-4">
+                <div>
+                  <h2 className="text-lg font-bold">Ready to try it?</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Create a free account and pick your first topic.
+                  </p>
+                </div>
               </div>
-            </div>
-            <Button size="lg" asChild>
-              <Link to="/register">
-                Get Started
-                <ArrowRight />
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </Reveal>
+              <Button size="lg" asChild>
+                <Link to="/register">
+                  Get Started
+                  <ArrowRight />
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </Reveal>
+      )}
     </PageShell>
   )
 }
