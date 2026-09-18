@@ -14,18 +14,13 @@ export type TopicSummary = {
   lastAttempted: string
 }
 
-export function getTopicSummaries(
-  progress: Progress[],
-): TopicSummary[] {
+export function getTopicSummaries(progress: Progress[]): TopicSummary[] {
   const topicMap = new Map<number, Progress[]>()
 
   for (const attempt of progress) {
     const existing = topicMap.get(attempt.topicId) ?? []
 
-    topicMap.set(attempt.topicId, [
-      ...existing,
-      attempt,
-    ])
+    topicMap.set(attempt.topicId, [...existing, attempt])
   }
 
   return Array.from(topicMap.values()).map((attempts) => {
@@ -34,14 +29,12 @@ export function getTopicSummaries(
     const averageScore =
       attempts.reduce(
         (total, attempt) =>
-          total +
-          (attempt.score / attempt.totalQuestions) * 100,
+          total + (attempt.score / attempt.totalQuestions) * 100,
         0,
       ) / attempts.length
 
     const latestAttempt = attempts.reduce((latest, attempt) => {
-      return new Date(attempt.attemptedAt) >
-        new Date(latest.attemptedAt)
+      return new Date(attempt.attemptedAt) > new Date(latest.attemptedAt)
         ? attempt
         : latest
     })
@@ -57,26 +50,27 @@ export function getTopicSummaries(
 }
 
 export function getPerformance(score: number) {
+  // Classes use the theme tokens so they work in light and dark mode.
   if (score >= 80) {
     return {
       isWeak: false,
-      badgeClass: 'bg-green-100 text-green-700',
-      progressClass: 'bg-green-500',
+      badgeClass: 'bg-success-soft text-success-foreground',
+      progressClass: 'bg-success',
     }
   }
 
   if (score >= 60) {
     return {
       isWeak: false,
-      badgeClass: 'bg-yellow-100 text-yellow-700',
-      progressClass: 'bg-yellow-500',
+      badgeClass: 'bg-warning-soft text-warning-foreground',
+      progressClass: 'bg-warning',
     }
   }
 
   return {
     isWeak: true,
-    badgeClass: 'bg-red-100 text-red-700',
-    progressClass: 'bg-red-500',
+    badgeClass: 'bg-danger-soft text-danger-foreground',
+    progressClass: 'bg-danger',
   }
 }
 

@@ -1,134 +1,107 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
+
+import { Logo } from './logo'
+
+const columns: {
+  heading: string
+  links: {
+    label: string
+    to?: '/' | '/about' | '/subject-selection'
+    href?: string
+  }[]
+}[] = [
+  {
+    heading: 'Product',
+    links: [
+      { label: 'Features', to: '/' },
+      { label: 'Pricing', to: '/' },
+      { label: 'Subjects', to: '/subject-selection' },
+    ],
+  },
+  {
+    heading: 'Resources',
+    links: [
+      { label: 'Study Guides', to: '/' },
+      { label: 'FAQ', to: '/' },
+      { label: 'Support', to: '/' },
+    ],
+  },
+  {
+    heading: 'Company',
+    links: [
+      { label: 'About', to: '/about' },
+      { label: 'Contact', to: '/' },
+    ],
+  },
+  {
+    heading: 'Legal',
+    links: [
+      { label: 'Privacy Policy', to: '/' },
+      { label: 'Terms of Service', to: '/' },
+    ],
+  },
+  {
+    heading: 'Social',
+    links: [
+      { label: 'Discord', href: 'https://discord.com' },
+      { label: 'Instagram', href: 'https://instagram.com' },
+      { label: 'TikTok', href: 'https://tiktok.com' },
+    ],
+  },
+]
+
+const linkClass =
+  'text-sm text-muted-foreground transition-colors hover:text-foreground'
 
 const Footer = () => {
   return (
-    <footer className="mt-auto border-t border-slate-200 bg-[#F0F3FE] px-5 py-12 text-slate-700 lg:px-8 xl:px-[8%]">
-      <div className="mx-auto grid max-w-7xl gap-10 sm:grid-cols-2 lg:grid-cols-5">
-        <div>
-          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-900">
-            Product
-          </h3>
-          <ul className="space-y-3 text-sm">
-            <li>
-              <Link to="/" className="hover:text-slate-950">
-                Features
-              </Link>
-            </li>
-            <li>
-              <Link to="/" className="hover:text-slate-950">
-                Pricing
-              </Link>
-            </li>
-            <li>
-              <Link to="/" className="hover:text-slate-950">
-                Subjects
-              </Link>
-            </li>
-          </ul>
+    <footer className="mt-auto border-t border-border bg-secondary/70 dark:bg-card">
+      <div className="container-prep py-14">
+        <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(5,minmax(0,1fr))] md:gap-8">
+          <div className="max-w-xs">
+            <Logo />
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              Learn, practise and sit realistic exams for every NCEA topic. Your
+              exam, mastered.
+            </p>
+          </div>
+
+          {columns.map((column) => (
+            <div key={column.heading}>
+              <h3 className="mb-4 text-xs font-semibold tracking-[0.16em] text-foreground uppercase">
+                {column.heading}
+              </h3>
+              <ul className="space-y-3">
+                {column.links.map((link) => (
+                  <li key={link.label}>
+                    {link.href ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={linkClass}
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link to={link.to ?? '/'} className={linkClass}>
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        <div>
-          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-900">
-            Resources
-          </h3>
-          <ul className="space-y-3 text-sm">
-            <li>
-              <Link to="/" className="hover:text-slate-950">
-                Study Guides
-              </Link>
-            </li>
-            <li>
-              <Link to="/" className="hover:text-slate-950">
-                FAQ
-              </Link>
-            </li>
-            <li>
-              <Link to="/" className="hover:text-slate-950">
-                Support
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-900">
-            Company
-          </h3>
-          <ul className="space-y-3 text-sm">
-            <li>
-              <Link to="/about" className="hover:text-slate-950">
-                About
-              </Link>
-            </li>
-            <li>
-              <Link to="/" className="hover:text-slate-950">
-                Contact
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-900">
-            Legal
-          </h3>
-          <ul className="space-y-3 text-sm">
-            <li>
-              <Link to="/" className="hover:text-slate-950">
-                Privacy Policy
-              </Link>
-            </li>
-            <li>
-              <Link to="/" className="hover:text-slate-950">
-                Terms of Service
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-900">
-            Social
-          </h3>
-          <ul className="space-y-3 text-sm">
-            <li>
-              <a
-                href="https://discord.com"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-slate-950"
-              >
-                Discord
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-slate-950"
-              >
-                Instagram
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://tiktok.com"
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-slate-950"
-              >
-                TikTok
-              </a>
-            </li>
-          </ul>
+        <div className="mt-12 flex flex-col gap-3 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} Prep. All rights reserved.</p>
+          <p className="text-xs">Made in Aotearoa New Zealand.</p>
         </div>
       </div>
-      <div className="mx-auto mt-10 max-w-7xl border-t border-slate-200 pt-6 text-sm text-slate-500">
-        © {new Date().getFullYear()} Prep. All rights reserved.
-      </div>
-    </footer >
-  );
-};
+    </footer>
+  )
+}
 
-export default Footer;
+export default Footer

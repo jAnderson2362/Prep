@@ -1,49 +1,56 @@
-import { Link } from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
+import { ArrowRight } from 'lucide-react'
+
+import { Button } from './ui/button'
+import { Reveal, Stagger, StaggerItem } from './motion'
 
 const Hero = () => {
   return (
-    <main className="bg-gradient-to-b from-[#81A3F8] to-[#F0F3FE] text-slate-900">
-      <section className="mx-auto flex min-h-[calc(100vh-80px)] max-w-7xl flex-col items-center justify-center px-6 py-16 text-center lg:px-8 xl:px-[8%]">
-        {/* Hero Text */}
-        <div className="max-w-3xl">
-          <h1 className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
-            Welcome to Prep
-          </h1>
+    <section className="relative isolate -mt-16 overflow-hidden pt-16">
+      {/* Background: Prep gradient + grid */}
+      <div
+        aria-hidden
+        className="bg-prep-gradient pointer-events-none absolute inset-0 -z-20"
+      />
 
-          <p className="mt-6 text-lg text-slate-700 sm:text-xl">
-            Your exam mastered
+      <div className="container-prep flex flex-col items-center py-20 text-center sm:py-28">
+        <Stagger className="max-w-3xl" stagger={0.1}>
+          <StaggerItem as="div">
+            <h1 className="text-4xl leading-[1.05] font-extrabold text-foreground sm:text-6xl lg:text-7xl">
+              Welcome to Prep
+            </h1>
+          </StaggerItem>
+
+          <StaggerItem>
+            <p className="mt-4 text-lg text-foreground/80 sm:text-xl">
+              Your exam mastered
+            </p>
+          </StaggerItem>
+
+          <StaggerItem className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+            <Button size="xl" asChild>
+              <Link to="/register">
+                Get Started
+                <ArrowRight />
+              </Link>
+            </Button>
+            <Button size="xl" variant="outline" asChild>
+              <Link to="/about">Learn More</Link>
+            </Button>
+          </StaggerItem>
+        </Stagger>
+      </div>
+
+      {/* Full-width image placeholder (mountain image in the mockup) */}
+      <Reveal delay={0.4}>
+        <div className="flex h-64 w-full items-center justify-center border-y border-border/60 bg-card/70 sm:h-80 lg:h-[28rem]">
+          <p className="text-sm text-muted-foreground">
+            Replace with screenshots later
           </p>
-
-          <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-            <Link
-              to="/register"
-              className="rounded-lg bg-blue-600 px-6 py-3 text-center font-medium text-white transition hover:bg-blue-700"
-            >
-              Get Started
-            </Link>
-
-            <Link
-              to="/about"
-              className="bg-slate-50 rounded-lg border border-slate-300 px-6 py-3 text-center font-medium text-slate-900 transition hover:bg-slate-100"
-            >
-              Learn More
-            </Link>
-          </div>
         </div>
-
-        {/* Screenshots */}
-        <div className="mt-14 w-full max-w-4xl">
-          <div className="flex h-72 w-full items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-lg sm:h-96 lg:h-[500px]">
-            <div className="text-center">
-              <p className="mt-2 text-sm text-slate-500">
-                Replace with screenshots later
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-  );
+      </Reveal>
+    </section>
+  )
 }
 
-export default Hero;
+export default Hero
