@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
+import { ArrowLeft, Loader2, Package } from 'lucide-react'
+
 import { api } from '#/lib/api'
 import type { components } from '../types/api'
+import { Reveal, Stagger, StaggerItem } from '#/components/motion'
+import { PageHeader, PageShell } from '#/components/page-shell'
+import { Alert } from '#/components/ui/alert'
+import { Badge } from '#/components/ui/badge'
+import { Button } from '#/components/ui/button'
+import { Card, CardContent } from '#/components/ui/card'
 
 type Product = components['schemas']['ProductInDB']
 
@@ -43,48 +51,57 @@ function ProductsPage() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900 p-6">
-      <div className="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-semibold">Products</h1>
-            <p className="mt-2 text-sm text-slate-600">
-              Loaded from the FastAPI backend via `lib/api.ts`.
-            </p>
-          </div>
-          <Link to="/" className="text-blue-600 hover:text-blue-700">
-            Back home
-          </Link>
-        </div>
+    <PageShell tone="hero">
+      <PageHeader
+        eyebrow="Catalogue"
+        title="Products"
+        description="Loaded from the FastAPI backend via the typed API client."
+        actions={
+          <Button variant="outline" asChild>
+            <Link to="/">
+              <ArrowLeft />
+              Back home
+            </Link>
+          </Button>
+        }
+      />
 
-        {loading ? (
-          <p className="text-slate-600">Loading products...</p>
-        ) : error ? (
-          <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
-            Error loading products: {error}
-          </div>
-        ) : products.length === 0 ? (
-          <p className="text-slate-600">No products found.</p>
-        ) : (
-          <ul className="space-y-4">
-            {products.map((product) => (
-              <li
-                key={product.id}
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <p className="text-lg font-medium text-slate-900">
-                    {product.name}
-                  </p>
-                  <span className="rounded-full bg-slate-200 px-3 py-1 text-sm text-slate-700">
+      {loading ? (
+        <Reveal className="flex items-center gap-3 text-muted-foreground">
+          <Loader2 className="size-4 animate-spin" />
+          Loading products...
+        </Reveal>
+      ) : error ? (
+        <Reveal>
+          <Alert variant="danger">Error loading products: {error}</Alert>
+        </Reveal>
+      ) : products.length === 0 ? (
+        <Reveal>
+          <Card variant="outline" className="items-center py-14 text-center">
+            <CardContent>
+              <Package className="mx-auto size-8 text-muted-foreground" />
+              <p className="mt-3 text-muted-foreground">No products found.</p>
+            </CardContent>
+          </Card>
+        </Reveal>
+      ) : (
+        <Stagger as="ul" className="grid gap-4 sm:grid-cols-2" stagger={0.06}>
+          {products.map((product) => (
+            <StaggerItem as="li" key={product.id}>
+              <Card interactive padding="sm" className="h-full">
+                <CardContent className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <p className="font-semibold">{product.name}</p>
+                  </div>
+                  <Badge variant="secondary" className="text-sm">
                     ${product.price.toFixed(2)}
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </main>
+                  </Badge>
+                </CardContent>
+              </Card>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      )}
+    </PageShell>
   )
 }

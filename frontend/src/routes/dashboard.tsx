@@ -1,5 +1,7 @@
 import ProgressCard from '#/components/progress-card'
 import { ProtectedRoute } from '#/components/protected-route'
+import { Stagger, StaggerItem } from '#/components/motion'
+import { PageHeader, PageShell } from '#/components/page-shell'
 import { getTopicSummaries } from '#/lib/progress'
 import { createFileRoute } from '@tanstack/react-router'
 
@@ -58,28 +60,25 @@ function Dashboard() {
 
   return (
     <ProtectedRoute>
-      <main className="min-h-screen bg-gradient-to-b from-[#81A3F8] to-[#F0F3FE] px-6 py-12">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10">
-            <h1 className="text-3xl font-bold text-slate-900">
-              Revision Progress
-            </h1>
+      <PageShell tone="hero" width="wide">
+        <PageHeader
+          eyebrow="Dashboard"
+          title="Revision Progress"
+          description="Track your performance and see which topics need more revision."
+        />
 
-            <p className="mt-2 text-slate-600">
-              Track your performance and see which topics need more revision.
-            </p>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {topics.map((topic) => (
-              <ProgressCard
-                key={topic.topicId}
-                topic={topic}
-              />
-            ))}
-          </div>
-        </div>
-      </main>
+        <Stagger
+          as="div"
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          stagger={0.1}
+        >
+          {topics.map((topic) => (
+            <StaggerItem key={topic.topicId} className="h-full">
+              <ProgressCard topic={topic} />
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </PageShell>
     </ProtectedRoute>
   )
 }

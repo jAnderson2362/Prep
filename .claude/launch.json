@@ -4,8 +4,8 @@
     {
       "name": "frontend",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--dir", "frontend", "run", "vite"],
-      "port": 3000
+      "runtimeArgs": ["--dir", "frontend", "exec", "vite", "dev", "--port", "3100"],
+      "port": 3100
     }
   ]
 }

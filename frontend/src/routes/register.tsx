@@ -1,169 +1,165 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useState } from 'react'
+import { Loader2 } from 'lucide-react'
+
+import { AuthLayout, GoogleIcon, OrDivider } from '#/components/auth-layout'
+import { FadePresence } from '#/components/motion'
+import { Alert } from '#/components/ui/alert'
+import { Button } from '#/components/ui/button'
+import { Input } from '#/components/ui/input'
+import { Label } from '#/components/ui/label'
 
 export const Route = createFileRoute('/register')({
   component: Register,
-});
+})
 
 function Register() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleRegister = async (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    setError("");
+    setError('')
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
+      setError('Passwords do not match.')
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
 
     try {
-      const response = await fetch("http://localhost:8000/auth/sign_up", {
-        method: "POST",
+      const response = await fetch('http://localhost:8000/auth/sign_up', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email,
           password,
         }),
-      });
+      })
 
-      const result = await response.json();
+      const result = await response.json()
 
       if (!response.ok || result.error) {
-        setError(result.error ?? "Unable to create account.");
-        return;
+        setError(result.error ?? 'Unable to create account.')
+        return
       }
 
       navigate({
-        to: "/profile",
-      });
+        to: '/profile',
+      })
     } catch {
-      setError("Unable to connect to the server.");
+      setError('Unable to connect to the server.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleGoogleSignIn = async () => {
     try {
-      const response = await fetch("http://localhost:8000/auth/google");
-      const result = await response.json();
+      const response = await fetch('http://localhost:8000/auth/google')
+      const result = await response.json()
 
-      console.log("Google OAuth result:", result);
+      console.log('Google OAuth result:', result)
 
       if (!response.ok || !result.url) {
-        setError(result.error ?? "Unable to register with Google.");
-        return;
+        setError(result.error ?? 'Unable to register with Google.')
+        return
       }
 
-      window.location.href = result.url;
+      window.location.href = result.url
     } catch (error) {
-      console.error("Google registration failed:", error);
-      setError("Unable to register with Google.");
+      console.error('Google registration failed:', error)
+      setError('Unable to register with Google.')
     }
-  };
+  }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#81A3F8] to-[#F0F3FE] px-6 py-12">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
-        <h1 className="mb-2 text-center text-3xl font-bold">
-          Create Account
-        </h1>
-
-        <form onSubmit={handleRegister} className="space-y-5">
-          <div>
-            <label className="mb-2 block font-medium">
-              Email
-            </label>
-
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 p-3 focus:border-blue-500 focus:outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="mb-2 block font-medium">
-              Password
-            </label>
-
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 p-3 focus:border-blue-500 focus:outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="mb-2 block font-medium">
-              Confirm Password
-            </label>
-
-            <input
-              type="password"
-              required
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 p-3 focus:border-blue-500 focus:outline-none"
-            />
-          </div>
-
-          {error && (
-            <div className="rounded-lg bg-red-100 p-3 text-red-700">
-              {error}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:bg-blue-400"
-          >
-            {loading ? "Creating Account..." : "Create Account"}
-          </button>
-        </form>
-
-        <div className="my-2 text-center text-sm text-slate-500"></div>
-
-        <button
-          type="button"
-          onClick={handleGoogleSignIn}
-          className="mt-4 flex w-full items-center justify-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-700 hover:underline active:scale-[0.98] active:text-blue-800"
-        >
-          <img
-            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-            alt=""
-            className="h-4 w-4"
-          />
-          Continue with Google
-        </button>
-
-        <p className="mt-6 text-center text-sm text-slate-600">
-          Already have an account?{" "}
+    <AuthLayout
+      title="Create your account"
+      description="Free to start. Pick your first topic in under a minute."
+      footer={
+        <>
+          Already have an account?{' '}
           <Link
             to="/sign-in"
-            className="font-semibold text-blue-600 hover:underline"
+            className="font-semibold text-primary underline-offset-4 hover:underline"
           >
             Sign In
           </Link>
-        </p>
-      </div>
-    </main>
-  );
+        </>
+      }
+    >
+      <form onSubmit={handleRegister} className="space-y-5">
+        <div>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
+            type="password"
+            autoComplete="new-password"
+            placeholder="At least 8 characters"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="confirm-password">Confirm Password</Label>
+          <Input
+            id="confirm-password"
+            type="password"
+            autoComplete="new-password"
+            placeholder="Repeat your password"
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+
+        <FadePresence show={!!error}>
+          <Alert variant="danger">{error}</Alert>
+        </FadePresence>
+
+        <Button type="submit" size="lg" className="w-full" disabled={loading}>
+          {loading && <Loader2 className="animate-spin" />}
+          {loading ? 'Creating Account...' : 'Create Account'}
+        </Button>
+      </form>
+
+      <OrDivider />
+
+      <Button
+        type="button"
+        variant="outline"
+        size="lg"
+        className="w-full"
+        onClick={handleGoogleSignIn}
+      >
+        <GoogleIcon className="size-4" />
+        Continue with Google
+      </Button>
+    </AuthLayout>
+  )
 }
