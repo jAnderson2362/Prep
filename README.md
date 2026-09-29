@@ -54,14 +54,48 @@ Prep/
 
 ```env
 SUPABASE_URL=your_supabase_url
-SUPABASE_KEY=your_supabase_service_key
+SUPABASE_KEY=your_supabase_publishable_key
+SUPABASE_SERVICE_KEY=your_supabase_secret_key
+CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+GEMINI_API_KEY=your_gemini_api_key
 ```
+
+`SUPABASE_SERVICE_KEY` is only used for the Exam mode question bank. Without it, exams are fully AI generated.
 
 2. Install dependencies:
 
 ```bash
-python -m pip install fastapi uvicorn supabase python-dotenv slowapi google-genai
+cd backend
+python -m pip install -r requirements-dev.txt
 ```
+
+3. Run the backend tests:
+
+```bash
+cd backend
+python -m pytest
+```
+
+### Exam question bank
+
+Exam mode fills each blueprint slot (difficulty + method area) from the `questions` table where a matching question exists, and generates the remaining slots with AI. Bank questions are built answer-first by generators in `backend/question_bank/`, so their answers are correct by construction. NZQA past papers are reference only; no NZQA text is stored.
+
+1. Create the table by running the SQL files in `backend/db/migrations/` in order in the Supabase SQL editor. See `backend/models/QuestionsTable.md` for the schema.
+2. Preview a sample of generated questions to check difficulty and format:
+
+```bash
+cd backend
+python -m scripts.seed_questions --skill solve_quadratic_factorising --count 10 --dry-run
+```
+
+3. Insert questions into the bank (safe to re-run, existing prompts are skipped):
+
+```bash
+cd backend
+python -m scripts.seed_questions --skill solve_quadratic_factorising --count 50
+```
+
+To add a new skill, write a generator module in `backend/question_bank/` with `SKILL`, `STANDARD`, `GRADE_BAND`, `METHOD_AREA` and `generate(rng)`, register it in `backend/question_bank/skills.py`, and add tests in `backend/test/`.
 
 ### Frontend
 
