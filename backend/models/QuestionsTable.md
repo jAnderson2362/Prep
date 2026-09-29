@@ -3,7 +3,9 @@
 The questions table is the pre-built question bank that Exam mode draws from before falling back to AI generation.
 Questions are original. NZQA past papers are used as reference only and no NZQA text is stored.
 
-Migration: `backend/db/migrations/001_create_questions.sql` (run in the Supabase SQL editor)
+Migrations (run in order in the Supabase SQL editor):
+- `backend/db/migrations/001_create_questions.sql` - creates the table
+- `backend/db/migrations/002_grant_questions_service_role.sql` - lets the backend's secret key use it
 
 # id
 - bigserial, unique identifier for each question
@@ -32,7 +34,8 @@ Migration: `backend/db/migrations/001_create_questions.sql` (run in the Supabase
 
 ## Row Level Security
 
-- RLS is enabled with no policies, so only the backend (service role key) can read or write. Clients never query this table directly, so answers are not exposed
+- RLS is enabled with no policies and only `service_role` is granted access, so the publishable key cannot read answers
+- The backend reads and writes it through `supabase_admin` (`backend/core/database.py`), which uses `SUPABASE_SERVICE_KEY`. If that key is not set, Exam mode uses AI for every slot
 
 ## Purpose
 

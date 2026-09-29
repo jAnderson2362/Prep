@@ -8,10 +8,6 @@ from services.question_bank import fill_slots_from_bank
 
 load_dotenv()
 
-print("ENV TEST:")
-print("Current directory:", os.getcwd())
-print("Key:", os.getenv("GEMINI_API_KEY"))
-
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 def build_practice_prompt(request: GeneratePracticeRequest) -> str:
