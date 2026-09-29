@@ -1,6 +1,6 @@
 import random
 
-from core.database import supabase
+from core.database import supabase_admin
 from models.ai import ExamQuestion
 from question_bank.exam import Slot, pick_bank_questions, to_exam_question
 
@@ -10,9 +10,13 @@ def fill_slots_from_bank(standard: str, slots: list[Slot]) -> list[ExamQuestion 
 
     Never raises: if the bank cannot be read, every slot falls back to AI.
     """
+    if supabase_admin is None:
+        print("SUPABASE_SERVICE_KEY is not set, using AI for all slots")
+        return [None] * len(slots)
+
     try:
         candidates = (
-            supabase.table("questions")
+            supabase_admin.table("questions")
             .select("id, skill, grade_band")
             .eq("standard", standard)
             .eq("active", True)
@@ -25,7 +29,7 @@ def fill_slots_from_bank(standard: str, slots: list[Slot]) -> list[ExamQuestion 
             return [None] * len(slots)
 
         rows = (
-            supabase.table("questions")
+            supabase_admin.table("questions")
             .select("id, skill, grade_band, prompt, marking")
             .in_("id", chosen)
             .execute()

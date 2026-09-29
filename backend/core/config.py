@@ -3,6 +3,8 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     supabase_url: str
     supabase_key: str
+    # Secret key, used only for the questions bank (RLS blocks the publishable key)
+    supabase_service_key: str | None = None
     cors_origins: str
     gemini_api_key:str
     rate_limit_default: str = "60/minute"
