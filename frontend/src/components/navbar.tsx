@@ -16,18 +16,20 @@ import { ThemeToggle } from './theme-toggle'
 
 type NavItem = {
   label: string
-  to: '/' | '/about' | '/products' | '/subject-selection' | '/dashboard'
+  to: '/' | '/about' | '/products' | '/subject-selection' | '/dashboard' | '/progress' 
   /** Only show when signed in. */
   auth?: boolean
 }
 
 const NAV_ITEMS: NavItem[] = [
   { label: 'Home', to: '/' },
+  { label: 'Dashboard', to: '/dashboard', auth: true },
   { label: 'About', to: '/about' },
   { label: 'Products', to: '/products' },
   { label: 'Subjects', to: '/subject-selection' },
   { label: 'Community', to: '/' },
-  { label: 'Dashboard', to: '/dashboard', auth: true },
+
+  { label: 'Progress', to: '/progress', auth: true },
 ]
 
 const Navbar = () => {

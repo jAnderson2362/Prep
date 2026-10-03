@@ -51,7 +51,7 @@ function SignIn() {
       }
 
       navigate({
-        to: '/profile',
+        to: '/dashboard',
       })
     } catch {
       setError('Unable to connect to the server.')
