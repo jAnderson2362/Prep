@@ -53,6 +53,17 @@ def save_progress(request: Request, body: Progress, user=Depends(verify_token)):
         user_id=user.id,
         topic_id=body.topic_id,
         score=body.score,
-        total_questions=body.total_questions
+        total_questions=body.total_questions,
+        token=request.state.token
     )
     return APIResponse(data=response.data, status=201)
+
+@router.get("", response_model=APIResponse)
+@limiter.limit(settings.rate_limit_default)
+def get_progress(request: Request, user=Depends(verify_token)):
+    response = service.get_progress(
+        user_id=user.id,
+        token=request.state.token
+    )
+
+    return APIResponse(data=response.data, status=200)
