@@ -84,15 +84,15 @@ const Navbar = () => {
         </li>
         <li>
           <Link
-            to="/"
-            activeOptions={{ exact: true }}
-            activeProps={{
-              className: 'border-b-2 border-blue-600 text-blue-600',
-            }}
-            inactiveProps={{
+             to="/community-page"
+             activeOptions={{ exact: true }}
+             activeProps={{
+             className: 'border-b-2 border-blue-600 text-blue-600',
+             }}
+             inactiveProps={{
               className: 'hover:text-blue-600',
             }}
-          >
+            >
             Community
           </Link>
         </li>
@@ -198,7 +198,7 @@ const Navbar = () => {
           <Link to="/" onClick={() => setMenuOpen(false)}>
             Features
           </Link>
-          <Link to="/" onClick={() => setMenuOpen(false)}>
+          <Link to="/community-page" onClick={() => setMenuOpen(false)}>
             Community
           </Link>
           <Link to="/" onClick={() => setMenuOpen(false)}>

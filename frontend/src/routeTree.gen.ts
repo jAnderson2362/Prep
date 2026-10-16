@@ -19,6 +19,7 @@ import { Route as ModeSelectionRouteImport } from './routes/mode-selection'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as ExamRouteImport } from './routes/exam'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as CommunityPageRouteImport } from './routes/community-page'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -72,6 +73,11 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CommunityPageRoute = CommunityPageRouteImport.update({
+  id: '/community-page',
+  path: '/community-page',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -86,6 +92,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/community-page': typeof CommunityPageRoute
   '/dashboard': typeof DashboardRoute
   '/exam': typeof ExamRoute
   '/learn': typeof LearnRoute
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/community-page': typeof CommunityPageRoute
   '/dashboard': typeof DashboardRoute
   '/exam': typeof ExamRoute
   '/learn': typeof LearnRoute
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/community-page': typeof CommunityPageRoute
   '/dashboard': typeof DashboardRoute
   '/exam': typeof ExamRoute
   '/learn': typeof LearnRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/community-page'
     | '/dashboard'
     | '/exam'
     | '/learn'
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/community-page'
     | '/dashboard'
     | '/exam'
     | '/learn'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/community-page'
     | '/dashboard'
     | '/exam'
     | '/learn'
@@ -174,6 +186,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CommunityPageRoute: typeof CommunityPageRoute
   DashboardRoute: typeof DashboardRoute
   ExamRoute: typeof ExamRoute
   LearnRoute: typeof LearnRoute
@@ -258,6 +271,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/community-page': {
+      id: '/community-page'
+      path: '/community-page'
+      fullPath: '/community-page'
+      preLoaderRoute: typeof CommunityPageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -278,6 +298,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CommunityPageRoute: CommunityPageRoute,
   DashboardRoute: DashboardRoute,
   ExamRoute: ExamRoute,
   LearnRoute: LearnRoute,
