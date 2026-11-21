@@ -5,7 +5,8 @@ import { ArrowRight, BookOpen, Play } from 'lucide-react'
 import { ProtectedRoute } from '#/components/protected-route'
 import { Stagger, StaggerItem } from '#/components/motion'
 import { PageHeader, PageShell } from '#/components/page-shell'
-import { getTopicSummaries, type Progress } from '#/lib/progress'
+import { getTopicSummaries } from '#/lib/progress'
+import type { Progress } from '#/lib/progress'
 import { API_URL, getAuthHeaders } from '#/lib/api'
 
 export const Route = createFileRoute('/dashboard')({

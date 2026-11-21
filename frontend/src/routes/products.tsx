@@ -29,13 +29,13 @@ function ProductsPage() {
       try {
         const result = await api.GET('/products')
         if ('error' in result) {
-          setError(JSON.stringify(result.error ?? 'Unknown error'))
+          setError(JSON.stringify(result.error))
           return
         }
 
         if (!active) return
 
-        setProducts(result.data ?? [])
+        setProducts(result.data)
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err))
       } finally {
